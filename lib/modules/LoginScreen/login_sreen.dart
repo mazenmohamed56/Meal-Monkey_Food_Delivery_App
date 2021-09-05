@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:meal_monkey/modules/ResetPasswordScreen/reset_password_screen.dart';
 import 'package:meal_monkey/modules/SignUpScreen/sign_up_screen.dart';
 import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
@@ -63,9 +64,14 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(
                   height: 30,
                 ),
-                Text(
-                  'Forgot your password?',
-                  style: Theme.of(context).textTheme.bodyText1,
+                TextButton(
+                  onPressed: () {
+                    navigateTo(context, ResetPasswordScreen());
+                  },
+                  child: Text(
+                    'Forgot your password?',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
                 ),
                 const SizedBox(
                   height: 40,
