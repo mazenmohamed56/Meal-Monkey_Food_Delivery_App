@@ -1,8 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_monkey/modules/splashScreen/splash_screen.dart';
+import 'package:meal_monkey/shared/BlocObserver.dart';
+import 'package:meal_monkey/shared/Network/local/sharedPreferences.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
-void main() {
+import 'layouts/HomeScreen/home_screen.dart';
+import 'modules/LoginScreen/login_sreen.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = MyBlocObserver();
+  await Firebase.initializeApp();
+  await CacheHelper.init();
+
   runApp(MyApp());
 }
 

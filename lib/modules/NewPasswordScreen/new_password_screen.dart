@@ -39,7 +39,11 @@ class NewPasswordScreen extends StatelessWidget {
                   controller: emailController,
                   type: TextInputType.emailAddress,
                   isPassword: true,
-                  validate: () {},
+                  validate: (value) {
+                    if (value!.isEmpty) {
+                      return '   Email must not be empty';
+                    }
+                  },
                   label: 'New Password',
                   radius: 30),
               const SizedBox(
@@ -49,7 +53,11 @@ class NewPasswordScreen extends StatelessWidget {
                   controller: emailController,
                   isPassword: true,
                   type: TextInputType.emailAddress,
-                  validate: () {},
+                  validate: (value) {
+                    if (value!.isEmpty) {
+                      return 'Email must not be empty';
+                    }
+                  },
                   label: 'Confirm Password',
                   radius: 30),
               const SizedBox(
