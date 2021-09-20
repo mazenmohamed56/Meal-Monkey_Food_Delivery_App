@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meal_monkey/layouts/HomeScreen/home_screen.dart';
-import 'package:meal_monkey/modules/LoginScreen/login_sreen.dart';
 import 'package:meal_monkey/shared/Network/local/sharedPreferences.dart';
 import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
