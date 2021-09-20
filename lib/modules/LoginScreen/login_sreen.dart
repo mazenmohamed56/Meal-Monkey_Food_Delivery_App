@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meal_monkey/layouts/HomeScreen/home_screen.dart';
+import 'package:meal_monkey/modules/BoardingScreen/boarding_screen.dart';
 import 'package:meal_monkey/modules/LoginScreen/cubit/cubit.dart';
 import 'package:meal_monkey/modules/LoginScreen/cubit/states.dart';
 import 'package:meal_monkey/modules/ResetPasswordScreen/reset_password_screen.dart';
@@ -25,7 +26,13 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginSuccessState) {
             CacheHelper.putData(key: 'uId', value: state.uId);
-            navigateAndFinsh(context, HomeScreen());
+            late Widget widget;
+            if (CacheHelper.getData(key: 'isOnBoarding') == null) {
+              widget = BoardingScreen();
+            } else
+              widget = HomeScreen();
+
+            navigateAndFinsh(context, widget);
           }
         },
         builder: (context, state) {

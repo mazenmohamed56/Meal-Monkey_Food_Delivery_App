@@ -6,9 +6,6 @@ import 'package:meal_monkey/shared/BlocObserver.dart';
 import 'package:meal_monkey/shared/Network/local/sharedPreferences.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
-import 'layouts/HomeScreen/home_screen.dart';
-import 'modules/LoginScreen/login_sreen.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
@@ -33,7 +30,7 @@ class MyApp extends StatelessWidget {
             color: secondaryFontColor,
           ),
           headline1: TextStyle(
-              fontFamily: 'Metropolis-Light',
+              fontFamily: 'Metropolis-ExtraBold',
               fontSize: 30,
               color: primaryFontColor),
           headline2: TextStyle(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:meal_monkey/layouts/HomeScreen/home_screen.dart';
+import 'package:meal_monkey/modules/BoardingScreen/boarding_screen.dart';
 import 'package:meal_monkey/modules/LoginScreen/login_sreen.dart';
 import 'package:meal_monkey/modules/SignUpScreen/cubit/cubit.dart';
 import 'package:meal_monkey/modules/SignUpScreen/cubit/states.dart';
@@ -25,8 +26,13 @@ class SignUpScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is RegisterSuccessState) {
             CacheHelper.putData(key: 'uId', value: state.uId);
+            late Widget widget;
+            if (CacheHelper.getData(key: 'isOnBoarding') == null) {
+              widget = BoardingScreen();
+            } else
+              widget = HomeScreen();
 
-            navigateAndFinsh(context, HomeScreen());
+            navigateAndFinsh(context, widget);
           }
         },
         builder: (context, state) {
