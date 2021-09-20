@@ -53,6 +53,8 @@ class LoginCubit extends Cubit<LoginScreenStates> {
         final result = await FirebaseAuth.instance
             .signInWithCredential(authCredential)
             .then((user) {
+          //Create Doc to save user Data
+
           createDoc(user);
         });
 
@@ -93,6 +95,7 @@ class LoginCubit extends Cubit<LoginScreenStates> {
       final credential = GoogleAuthProvider.credential(
           idToken: googleAuth?.idToken, accessToken: googleAuth?.accessToken);
       await FirebaseAuth.instance.signInWithCredential(credential).then((user) {
+        //Create Doc to save user Data
         createDoc(user);
 
         emit(LoginSuccessState(
@@ -103,6 +106,7 @@ class LoginCubit extends Cubit<LoginScreenStates> {
       print(e);
     }
   }
+  //Create Doc to save user Data
 
   void createDoc(var user) {
     FirebaseFirestore.instance
@@ -116,8 +120,8 @@ class LoginCubit extends Cubit<LoginScreenStates> {
             email: user.user!.email.toString(),
             uId: user.user!.uid,
             profileImagepath: user.user!.photoURL.toString(),
-            address: '',
-            phone: '');
+            address: 'Please add your address',
+            phone: 'Please add your phone number');
 
         FirebaseFirestore.instance
             .collection('users')
