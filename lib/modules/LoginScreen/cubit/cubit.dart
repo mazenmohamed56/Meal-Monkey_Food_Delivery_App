@@ -52,20 +52,8 @@ class LoginCubit extends Cubit<LoginScreenStates> {
             FacebookAuthProvider.credential(accessToken!.token);
         final result = await FirebaseAuth.instance
             .signInWithCredential(authCredential)
-            .then((value) {
-          FirebaseFirestore.instance
-              .collection('users')
-              .doc(value.user!.uid)
-              .set({
-                'name': value.user!.displayName.toString(),
-                'email': value.user!.email.toString(),
-                'uId': value.user!.uid,
-                'profileImagepath': value.user!.photoURL.toString()
-              })
-              .then((value) {})
-              .catchError((error) {
-                print(error.toString());
-              });
+            .then((user) {
+          createDoc(user);
         });
 
         // Get profile data
@@ -105,33 +93,8 @@ class LoginCubit extends Cubit<LoginScreenStates> {
       final credential = GoogleAuthProvider.credential(
           idToken: googleAuth?.idToken, accessToken: googleAuth?.accessToken);
       await FirebaseAuth.instance.signInWithCredential(credential).then((user) {
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.user!.uid)
-            .get()
-            .then((value) {
-          if (value.exists == false) {
-            UserModel model = UserModel(
-                name: user.user!.displayName.toString(),
-                email: user.user!.email.toString(),
-                uId: user.user!.uid,
-                profileImagepath: user.user!.photoURL.toString(),
-                address: '',
-                phone: '');
+        createDoc(user);
 
-            FirebaseFirestore.instance
-                .collection('users')
-                .doc(user.user!.uid)
-                .set(model.toMap())
-                .then((value) {})
-                .catchError((error) {
-              print(error.toString());
-            });
-            emit(LoginSuccessState(
-              user.user!.uid,
-            ));
-          }
-        });
         emit(LoginSuccessState(
           user.user!.uid,
         ));
@@ -139,5 +102,35 @@ class LoginCubit extends Cubit<LoginScreenStates> {
     } catch (e) {
       print(e);
     }
+  }
+
+  void createDoc(var user) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.user!.uid)
+        .get()
+        .then((value) {
+      if (value.exists == false) {
+        UserModel model = UserModel(
+            name: user.user!.displayName.toString(),
+            email: user.user!.email.toString(),
+            uId: user.user!.uid,
+            profileImagepath: user.user!.photoURL.toString(),
+            address: '',
+            phone: '');
+
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.user!.uid)
+            .set(model.toMap())
+            .then((value) {})
+            .catchError((error) {
+          print(error.toString());
+        });
+        emit(LoginSuccessState(
+          user.user!.uid,
+        ));
+      }
+    });
   }
 }
