@@ -37,6 +37,10 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Metropolis-Bold',
               fontSize: 14,
               color: primaryFontColor),
+          headline3: TextStyle(
+              fontFamily: 'Metropolis-Light',
+              fontSize: 30,
+              color: primaryFontColor),
           bodyText2: TextStyle(
               fontFamily: 'Metropolis-Regular',
               fontSize: 14,

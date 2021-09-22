@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
-import 'package:meal_monkey/layouts/HomeScreen/home_screen.dart';
+import 'package:meal_monkey/layouts/HomeScreen/home_layout.dart';
 import 'package:meal_monkey/modules/BoardingScreen/boarding_screen.dart';
 import 'package:meal_monkey/modules/LoginScreen/login_sreen.dart';
 import 'package:meal_monkey/modules/SignUpScreen/cubit/cubit.dart';
@@ -30,7 +30,7 @@ class SignUpScreen extends StatelessWidget {
             if (CacheHelper.getData(key: 'isOnBoarding') == null) {
               widget = BoardingScreen();
             } else
-              widget = HomeScreen();
+              widget = HomeLayOut();
 
             navigateAndFinsh(context, widget);
           }

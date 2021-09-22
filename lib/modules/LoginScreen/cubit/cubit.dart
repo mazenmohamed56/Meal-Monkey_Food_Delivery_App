@@ -50,7 +50,7 @@ class LoginCubit extends Cubit<LoginScreenStates> {
         final FacebookAccessToken? accessToken = res.accessToken;
         final AuthCredential authCredential =
             FacebookAuthProvider.credential(accessToken!.token);
-        final result = await FirebaseAuth.instance
+         await FirebaseAuth.instance
             .signInWithCredential(authCredential)
             .then((user) {
           //Create Doc to save user Data

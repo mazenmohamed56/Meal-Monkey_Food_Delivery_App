@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:meal_monkey/layouts/HomeScreen/home_screen.dart';
-import 'package:meal_monkey/modules/LoginScreen/login_sreen.dart';
+import 'package:meal_monkey/layouts/HomeScreen/home_layout.dart';
 import 'package:meal_monkey/modules/StartScreen/start_screen.dart';
 import 'package:meal_monkey/shared/Network/local/sharedPreferences.dart';
 import 'package:meal_monkey/shared/components/components.dart';
@@ -20,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 5), () {
       late Widget widget;
       if (CacheHelper.getData(key: 'uId') != null) {
-        widget = HomeScreen();
+        widget = HomeLayOut();
       } else
         widget = StartScreen();
       navigateAndFinsh(context, widget);
