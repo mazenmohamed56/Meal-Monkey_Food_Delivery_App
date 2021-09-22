@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
               color: primaryFontColor),
           headline2: TextStyle(
               fontFamily: 'Metropolis-Bold',
-              fontSize: 14,
+              fontSize: 16,
               color: primaryFontColor),
           headline3: TextStyle(
               fontFamily: 'Metropolis-Light',

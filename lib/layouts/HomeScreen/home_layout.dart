@@ -16,6 +16,7 @@ class HomeLayOut extends StatelessWidget {
           var cubit = HomeCubit.get(context);
 
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             appBar: AppBar(
               elevation: 0,
               backgroundColor: Color(0xFFffffff),

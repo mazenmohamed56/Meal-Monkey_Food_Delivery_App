@@ -16,7 +16,7 @@ Widget defaultFormField({
   bool isClickable = true,
 }) =>
     Container(
-      height: 60,
+      height: 56,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       decoration: BoxDecoration(
         color: Color(0xFFF2F2F2),
@@ -39,6 +39,7 @@ Widget defaultFormField({
             color: Colors.amber,
           ),
           border: InputBorder.none,
+          labelText: label,
           hintText: label,
           prefixIcon: Icon(
             prefix,

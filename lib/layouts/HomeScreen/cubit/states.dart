@@ -6,6 +6,8 @@ class InitHomeState extends HomeScreenStates {}
 
 class ChangeeNavBottomBarState extends HomeScreenStates {}
 
+class PasswordIconChange extends HomeScreenStates {}
+
 class GetUserDataLoadingState extends HomeScreenStates {}
 
 class GetUserDataSuccessState extends HomeScreenStates {}
@@ -15,3 +17,17 @@ class GetUserDataErrorState extends HomeScreenStates {
   String error;
   GetUserDataErrorState(this.error);
 }
+
+class ChangeIsClickFormFieldState extends HomeScreenStates {}
+
+class PickProfileImageLoadingState extends HomeScreenStates {}
+
+class PickProfileImageSuccessState extends HomeScreenStates {}
+
+class PickProfileImageErrorState extends HomeScreenStates {}
+
+class UpdateUserDataLoadingState extends HomeScreenStates {}
+
+class UpdateUserDataSuccessState extends HomeScreenStates {}
+
+class UpdateUserDataErrorState extends HomeScreenStates {}
