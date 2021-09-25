@@ -45,6 +45,10 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Metropolis-Regular',
               fontSize: 14,
               color: secondaryFontColor),
+          headline4: TextStyle(
+              fontFamily: 'Metropolis-SemiBold',
+              fontSize: 14,
+              color: primaryFontColor),
         ),
       ),
       home: SplashScreen(),
