@@ -39,7 +39,7 @@ class ProfileScreen extends StatelessWidget {
                   if (state is UpdateUserDataLoadingState)
                     LinearProgressIndicator(),
                   const SizedBox(
-                    height: 35,
+                    height: 25,
                   ),
                   Container(
                     clipBehavior: Clip.antiAliasWithSaveLayer,
