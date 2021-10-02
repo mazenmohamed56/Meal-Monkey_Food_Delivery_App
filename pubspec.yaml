@@ -65,6 +65,10 @@ flutter:
     - assets/images/Delivery vector.png
     - assets/images/Find food you love vector.png
     - assets/images/Live tracking vector.png
+    - assets/images/ilya-mashkov-_qxbJUr9RqI-unsplash.jpg
+    - assets/images/kobby-mendez-idTwDKt2j2o-unsplash.jpg
+    - assets/images/davide-cantelli-jpkfc5_d-DI-unsplash.jpg
+    - assets/images/guy-basabose-FzdEbrA3Qj0-unsplash.jpg
   fonts:
     - family: Metropolis SemiBold
       fonts:

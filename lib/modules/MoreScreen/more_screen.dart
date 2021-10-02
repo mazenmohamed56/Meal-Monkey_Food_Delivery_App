@@ -7,33 +7,38 @@ class MoreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 40,
-          ),
-          buildMoreItem(
-              context, 'Payment Details', FontAwesomeIcons.handHoldingUsd),
-          const SizedBox(
-            height: 15,
-          ),
-          buildMoreItem(context, 'My Orders', FontAwesomeIcons.shoppingBag),
-          const SizedBox(
-            height: 15,
-          ),
-          buildMoreItem(context, 'Notifications', FontAwesomeIcons.solidBell),
-          const SizedBox(
-            height: 15,
-          ),
-          buildMoreItem(context, 'Inbox', FontAwesomeIcons.envelope),
-          const SizedBox(
-            height: 15,
-          ),
-          buildMoreItem(context, 'About Us', FontAwesomeIcons.info),
-          const SizedBox(
-            height: 25,
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 40,
+            ),
+            buildMoreItem(
+                context, 'Payment Details', FontAwesomeIcons.handHoldingUsd),
+            const SizedBox(
+              height: 15,
+            ),
+            buildMoreItem(context, 'My Orders', FontAwesomeIcons.shoppingBag),
+            const SizedBox(
+              height: 15,
+            ),
+            buildMoreItem(context, 'Notifications', FontAwesomeIcons.solidBell),
+            const SizedBox(
+              height: 15,
+            ),
+            buildMoreItem(context, 'Inbox', FontAwesomeIcons.envelope),
+            const SizedBox(
+              height: 15,
+            ),
+            buildMoreItem(context, 'About Us', FontAwesomeIcons.info),
+            const SizedBox(
+              height: 25,
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+          ],
+        ),
       ),
     );
   }
