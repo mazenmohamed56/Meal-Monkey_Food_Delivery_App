@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:meal_monkey/layouts/HomeScreen/home_layout.dart';
 import 'package:meal_monkey/modules/StartScreen/start_screen.dart';
+import 'package:meal_monkey/shared/Network/local/sharedPreferences.dart';
 import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
@@ -14,7 +16,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5), () => navigateAndFinsh(context, StartScreen()));
+    Timer(Duration(seconds: 5), () {
+      late Widget widget;
+      if (CacheHelper.getData(key: 'uId') != null) {
+        widget = HomeLayOut();
+      } else
+        widget = StartScreen();
+      navigateAndFinsh(context, widget);
+    });
   }
 
   @override

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "523335960099",
+    "project_id": "meal-monkey-delivery-app",
+    "storage_bucket": "meal-monkey-delivery-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523335960099:android:c87f7d00216eee0513d396",
+        "android_client_info": {
+          "package_name": "com.example.meal_monkey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "523335960099-56lm5g3464s7u8foeb33qle6a5ndn4m4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.meal_monkey",
+            "certificate_hash": "019afa8e66045b6995740a482b6ec37749f4c8ed"
+          }
+        },
+        {
+          "client_id": "523335960099-sq3mtks3ptc1nbhf4q095gg8tg33tgfh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2yAinHLzjOYkaxd7jaq9C4JkbhMwjFZA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "523335960099-sq3mtks3ptc1nbhf4q095gg8tg33tgfh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

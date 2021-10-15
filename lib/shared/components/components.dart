@@ -6,10 +6,8 @@ Widget defaultFormField({
   required TextEditingController controller,
   required TextInputType type,
   Function? onSubmit,
-  Function? onChange,
-  Function? onTap,
   bool isPassword = false,
-  required Function validate,
+  required String? Function(String? val)? validate,
   double radius = 0.0,
   required String label,
   IconData? prefix,
@@ -18,7 +16,7 @@ Widget defaultFormField({
   bool isClickable = true,
 }) =>
     Container(
-      height: 60,
+      height: 56,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       decoration: BoxDecoration(
         color: Color(0xFFF2F2F2),
@@ -32,20 +30,16 @@ Widget defaultFormField({
         obscureText: isPassword,
         enabled: isClickable,
         onFieldSubmitted: (e) {
-          onSubmit!(e);
+          if (onSubmit != null) onSubmit(e);
         },
-        onChanged: (e) {
-          onChange!(e);
-        },
-        onTap: () {
-          onTap!();
-        },
-        validator: (e) {
-          validate(e);
-        },
+        validator: validate,
         textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
+          errorStyle: TextStyle(
+            color: Colors.amber,
+          ),
           border: InputBorder.none,
+          labelText: label,
           hintText: label,
           prefixIcon: Icon(
             prefix,

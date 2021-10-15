@@ -7,7 +7,6 @@ import 'package:pinput/pin_put/pin_put.dart';
 class ResetCodeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var CodeController = TextEditingController();
     return Scaffold(
       body: SafeArea(
         child: Padding(

@@ -39,9 +39,9 @@ class ResetPasswordScreen extends StatelessWidget {
               defaultFormField(
                   controller: emailController,
                   type: TextInputType.emailAddress,
-                  validate: () {},
                   label: 'Email',
-                  radius: 30),
+                  radius: 30,
+                  validate: (String? val) {}),
               const SizedBox(
                 height: 25,
               ),

@@ -1,8 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_monkey/modules/splashScreen/splash_screen.dart';
+import 'package:meal_monkey/shared/BlocObserver.dart';
+import 'package:meal_monkey/shared/Network/local/sharedPreferences.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = MyBlocObserver();
+  await Firebase.initializeApp();
+  await CacheHelper.init();
+
   runApp(MyApp());
 }
 
@@ -21,17 +30,25 @@ class MyApp extends StatelessWidget {
             color: secondaryFontColor,
           ),
           headline1: TextStyle(
-              fontFamily: 'Metropolis-Light',
+              fontFamily: 'Metropolis-ExtraBold',
               fontSize: 30,
               color: primaryFontColor),
           headline2: TextStyle(
               fontFamily: 'Metropolis-Bold',
-              fontSize: 14,
+              fontSize: 16,
+              color: primaryFontColor),
+          headline3: TextStyle(
+              fontFamily: 'Metropolis-Light',
+              fontSize: 30,
               color: primaryFontColor),
           bodyText2: TextStyle(
               fontFamily: 'Metropolis-Regular',
               fontSize: 14,
               color: secondaryFontColor),
+          headline4: TextStyle(
+              fontFamily: 'Metropolis-SemiBold',
+              fontSize: 14,
+              color: primaryFontColor),
         ),
       ),
       home: SplashScreen(),

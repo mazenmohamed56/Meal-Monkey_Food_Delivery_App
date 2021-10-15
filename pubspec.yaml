@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.14.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -30,7 +30,20 @@ dependencies:
   cupertino_icons: ^1.0.2
   font_awesome_flutter: ^9.1.0
   pinput: ^1.2.0
-
+  bloc: ^7.2.0
+  flutter_bloc: ^7.3.0
+  firebase_core: "^1.4.0"
+  firebase_auth: "^3.0.1"
+  cloud_firestore: "^2.4.0"
+  flutter_conditional_rendering: ^2.0.0
+  shared_preferences: ^2.0.6
+  carousel_slider: ^4.0.0 
+  smooth_page_indicator: ^1.0.0+2
+  
+  flutter_login_facebook: ^1.1.0
+  google_sign_in: ^5.1.0
+  image_picker: ^0.8.4+2
+  firebase_storage: ^10.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -49,6 +62,13 @@ flutter:
     - assets/images/Monkey face.png
     - assets/images/background objects.png
     - assets/images/SplashBackGround.jpeg
+    - assets/images/Delivery vector.png
+    - assets/images/Find food you love vector.png
+    - assets/images/Live tracking vector.png
+    - assets/images/ilya-mashkov-_qxbJUr9RqI-unsplash.jpg
+    - assets/images/kobby-mendez-idTwDKt2j2o-unsplash.jpg
+    - assets/images/davide-cantelli-jpkfc5_d-DI-unsplash.jpg
+    - assets/images/guy-basabose-FzdEbrA3Qj0-unsplash.jpg
   fonts:
     - family: Metropolis SemiBold
       fonts:
