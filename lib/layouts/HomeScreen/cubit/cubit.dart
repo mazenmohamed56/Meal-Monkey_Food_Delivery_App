@@ -31,7 +31,7 @@ class HomeCubit extends Cubit<HomeScreenStates> {
   int currentIndex = 4;
   List<String> titles = [
     'Menu',
-    'Offers',
+    'Latest Offers',
     'Profile',
     'More',
     'Home',
