@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:meal_monkey/modules/menu-Details-Screen/menu_detail_screen.dart';
 import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
@@ -118,7 +119,9 @@ class MenuScreen extends StatelessWidget {
     return InkWell(
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-      onTap: () {},
+      onTap: () {
+        navigateTo(context, MenuDetails(title));
+      },
       child: Container(
         child: Stack(
           alignment: AlignmentDirectional.centerEnd,
