@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:meal_monkey/modules/item%20Details%20Screen/item_details_sceen.dart';
 import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
@@ -79,67 +80,73 @@ class MenuDetails extends StatelessWidget {
   }
 
   Widget offerListItem(context) {
-    return Container(
-      child: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Image(
-              image: AssetImage(
-                  'assets/images/guy-basabose-FzdEbrA3Qj0-unsplash.jpg'),
-              height: 200,
-              width: double.infinity,
-              fit: BoxFit.fill),
-          const SizedBox(height: 10),
-          Card(
-            margin: EdgeInsets.zero,
-            elevation: 20,
-            color: Colors.black.withOpacity(0.04),
-            child: Padding(
-              padding: const EdgeInsetsDirectional.only(start: 21, bottom: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Coffe',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline2!
-                        .copyWith(color: Colors.white),
-                  ),
-                  const SizedBox(height: 5),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Icon(
-                        FontAwesomeIcons.solidStar,
-                        color: defaultColor,
-                        size: 14,
-                      ),
-                      const SizedBox(width: 5),
-                      Text('4.9',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(color: defaultColor)),
-                      const SizedBox(width: 5),
-                      Text('(120 rating)',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(color: Colors.white)),
-                      const SizedBox(width: 25),
-                      Text('Beverages',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(color: Colors.white)),
-                    ],
-                  )
-                ],
+    return InkWell(
+      onTap: () {
+        navigateTo(context, ItemDetailsScreen());
+      },
+      child: Container(
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Image(
+                image: AssetImage(
+                    'assets/images/guy-basabose-FzdEbrA3Qj0-unsplash.jpg'),
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.fill),
+            const SizedBox(height: 10),
+            Card(
+              margin: EdgeInsets.zero,
+              elevation: 20,
+              color: Colors.black.withOpacity(0.04),
+              child: Padding(
+                padding:
+                    const EdgeInsetsDirectional.only(start: 21, bottom: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Coffe',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline2!
+                          .copyWith(color: Colors.white),
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.solidStar,
+                          color: defaultColor,
+                          size: 14,
+                        ),
+                        const SizedBox(width: 5),
+                        Text('4.9',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(color: defaultColor)),
+                        const SizedBox(width: 5),
+                        Text('(120 rating)',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(color: Colors.white)),
+                        const SizedBox(width: 25),
+                        Text('Beverages',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(color: Colors.white)),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
