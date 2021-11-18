@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:meal_monkey/layouts/HomeScreen/cubit/cubit.dart';
+import 'package:meal_monkey/layouts/HomeScreen/cubit/states.dart';
+import 'package:meal_monkey/modules/menu-Details-Screen/menu_detail_screen.dart';
 import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
@@ -7,37 +11,27 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var searchController = TextEditingController();
-    return Column(
-      children: [
-        SizedBox(
-          height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: defaultFormField(
-              radius: 50,
-              prefix: FontAwesomeIcons.search,
-              controller: searchController,
-              type: TextInputType.text,
-              validate: (value) {},
-              label: 'Search Food'),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Expanded(
-          child: Stack(
+    return BlocConsumer<HomeCubit, HomeScreenStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return SingleChildScrollView(
+          child: Column(
             children: [
+              SizedBox(
+                height: 10,
+              ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Container(
-                  width: 100,
-                  decoration: BoxDecoration(
-                      color: defaultColor,
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(50),
-                          bottomRight: Radius.circular(50))),
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: defaultFormField(
+                    radius: 50,
+                    prefix: FontAwesomeIcons.search,
+                    controller: searchController,
+                    type: TextInputType.text,
+                    validate: (value) {},
+                    label: 'Search Food'),
+              ),
+              SizedBox(
+                height: 10,
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -47,6 +41,13 @@ class MenuScreen extends StatelessWidget {
                       height: 30,
                     ),
                     buildMoreItem(
+                        function: () {
+                          navigateTo(context,
+                              MenuDetails('Food', HomeCubit.get(context).food));
+                        },
+                        itemCount: HomeCubit.get(context).food.isEmpty
+                            ? 0
+                            : HomeCubit.get(context).food.length,
                         context: context,
                         title: 'Food',
                         imagePath:
@@ -59,6 +60,15 @@ class MenuScreen extends StatelessWidget {
                       height: 20,
                     ),
                     buildMoreItem(
+                        function: () {
+                          navigateTo(
+                              context,
+                              MenuDetails('Beverages',
+                                  HomeCubit.get(context).berverages));
+                        },
+                        itemCount: HomeCubit.get(context).berverages.isEmpty
+                            ? 0
+                            : HomeCubit.get(context).berverages.length,
                         context: context,
                         title: 'Beverages',
                         imagePath:
@@ -71,6 +81,15 @@ class MenuScreen extends StatelessWidget {
                       height: 20,
                     ),
                     buildMoreItem(
+                        function: () {
+                          navigateTo(
+                              context,
+                              MenuDetails(
+                                  'Desserts', HomeCubit.get(context).dessert));
+                        },
+                        itemCount: HomeCubit.get(context).dessert.isEmpty
+                            ? 0
+                            : HomeCubit.get(context).dessert.length,
                         context: context,
                         title: 'Desserts',
                         imagePath:
@@ -83,6 +102,15 @@ class MenuScreen extends StatelessWidget {
                       height: 20,
                     ),
                     buildMoreItem(
+                        function: () {
+                          navigateTo(
+                              context,
+                              MenuDetails('Promotions',
+                                  HomeCubit.get(context).promotions));
+                        },
+                        itemCount: HomeCubit.get(context).promotions.isEmpty
+                            ? 0
+                            : HomeCubit.get(context).promotions.length,
                         context: context,
                         title: 'Promotions',
                         imagePath:
@@ -96,21 +124,23 @@ class MenuScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
+              ),
+              SizedBox(
+                height: 30,
+              ),
             ],
           ),
-        ),
-        SizedBox(
-          height: 30,
-        ),
-      ],
+        );
+      },
     );
   }
 
   Widget buildMoreItem(
       {required BuildContext context,
+      required int itemCount,
       required String title,
       required String imagePath,
+      required Function function,
       required double a,
       required double b,
       required double c,
@@ -118,7 +148,9 @@ class MenuScreen extends StatelessWidget {
     return InkWell(
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-      onTap: () {},
+      onTap: () {
+        function();
+      },
       child: Container(
         child: Stack(
           alignment: AlignmentDirectional.centerEnd,
@@ -152,19 +184,19 @@ class MenuScreen extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .headline1!
-                                  .copyWith(fontSize: 22),
+                                  .copyWith(
+                                    fontSize: 22,
+                                  ),
                             ),
                             SizedBox(
                               height: 8,
                             ),
-                            Text('112 items',
+                            Text('$itemCount items',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText2!
                                     .copyWith(
-                                      fontSize: 11,
-                                      color: placeholder,
-                                    )),
+                                        fontSize: 11, color: defaultColor)),
                           ],
                         ),
                       ],

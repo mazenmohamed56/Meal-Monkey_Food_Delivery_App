@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meal_monkey/layouts/HomeScreen/cubit/states.dart';
+import 'package:meal_monkey/models/item_data_modell.dart';
 import 'package:meal_monkey/models/user_data_model.dart';
 import 'package:meal_monkey/modules/HomeScreen/home_screen.dart';
 import 'package:meal_monkey/modules/MenuScreen/menu_screen.dart';
@@ -31,7 +32,7 @@ class HomeCubit extends Cubit<HomeScreenStates> {
   int currentIndex = 4;
   List<String> titles = [
     'Menu',
-    'Offers',
+    'Latest Offers',
     'Profile',
     'More',
     'Home',
@@ -142,6 +143,33 @@ class HomeCubit extends Cubit<HomeScreenStates> {
     }).catchError((error) {
       print(error.toString());
       emit(UpdateUserDataErrorState());
+    });
+  }
+
+  List<ItemModel> items = [];
+  List<ItemModel> food = [];
+  List<ItemModel> dessert = [];
+  List<ItemModel> berverages = [];
+  List<ItemModel> promotions = [];
+  void getItems() {
+    emit(getItemsDataLoadingState());
+    FirebaseFirestore.instance.collection('items').get().then((value) {
+      value.docs.forEach((element) {
+        items.add(ItemModel.fromJson(element.data()));
+        if (ItemModel.fromJson(element.data()).category == 'food') {
+          food.add(ItemModel.fromJson(element.data()));
+        } else if (ItemModel.fromJson(element.data()).category == 'dessert') {
+          dessert.add(ItemModel.fromJson(element.data()));
+        } else if (ItemModel.fromJson(element.data()).category == 'beverages') {
+          berverages.add(ItemModel.fromJson(element.data()));
+        } else {
+          promotions.add(ItemModel.fromJson(element.data()));
+        }
+      });
+      emit(getItemsDataSuccessState());
+    }).catchError((error) {
+      print('{{{{$error}}}}}');
+      emit(getItemsDataErrorState());
     });
   }
 }
