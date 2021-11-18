@@ -132,6 +132,6 @@ class _BoardingScreenState extends State<BoardingScreen> {
   void skipBoarding() {
     CacheHelper.putData(key: 'isOnBoarding', value: true);
 
-    navigateAndFinsh(context, HomeLayOut);
+    navigateAndFinsh(context, HomeLayOut());
   }
 }

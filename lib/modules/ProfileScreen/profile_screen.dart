@@ -194,6 +194,9 @@ class ProfileScreen extends StatelessWidget {
                     fallbackBuilder: (contex) =>
                         Center(child: CircularProgressIndicator()),
                   ),
+                  SizedBox(
+                    height: 28,
+                  )
                 ],
               ),
             ),

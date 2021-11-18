@@ -5,8 +5,14 @@ class ItemDetailsScreenCubit extends Cubit<ItemDetailsScreenStates> {
   ItemDetailsScreenCubit() : super(InitHomeState());
   static ItemDetailsScreenCubit get(context) => BlocProvider.of(context);
   int numberOfPortions = 1;
-  int item = 750;
-  var totalPrice = 750;
+
+  late var totalPrice;
+  late var itemPrice;
+
+  void setPrices(var itemprice) {
+    itemPrice = itemprice;
+    totalPrice = itemprice;
+  }
 
   void changeNumberOfPortions(String typeOfChanfe) {
     if (typeOfChanfe == '-') {
@@ -17,7 +23,7 @@ class ItemDetailsScreenCubit extends Cubit<ItemDetailsScreenStates> {
     if (typeOfChanfe == '+') {
       numberOfPortions++;
     }
-    totalPrice = numberOfPortions * item;
+    totalPrice = numberOfPortions * itemPrice;
     emit(ChangeNumberOfPortionsState());
   }
 }

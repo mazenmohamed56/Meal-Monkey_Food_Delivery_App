@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:meal_monkey/models/item_data_modell.dart';
 import 'package:meal_monkey/modules/item%20Details%20Screen/cubit/cubit.dart';
 import 'package:meal_monkey/modules/item%20Details%20Screen/cubit/states.dart';
 import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
 class ItemDetailsScreen extends StatelessWidget {
-  get placeholder => null;
+  final ItemModel item;
+  ItemDetailsScreen(this.item);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return BlocProvider(
-      create: (context) => ItemDetailsScreenCubit(),
+      create: (context) => ItemDetailsScreenCubit()..setPrices(item.price),
       child: BlocConsumer<ItemDetailsScreenCubit, ItemDetailsScreenStates>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -23,8 +25,7 @@ class ItemDetailsScreen extends StatelessWidget {
             body: Stack(
               children: [
                 Image(
-                  image: AssetImage(
-                      'assets/images/chad-montano-MqT0asuoIcU-unsplash.jpg'),
+                  image: NetworkImage('${item.imagepath}'),
                   width: double.infinity,
                   height: size.height * 0.48,
                   fit: BoxFit.fill,
@@ -82,188 +83,192 @@ class ItemDetailsScreen extends StatelessWidget {
                             child: Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 45,
-                                  ),
-                                  Text('Tandoori Chicken Pizza',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1!
-                                          .copyWith(fontSize: 22)),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          RatingBar.builder(
-                                            itemSize: 30,
-                                            initialRating: 4,
-                                            minRating: 1,
-                                            direction: Axis.horizontal,
-                                            allowHalfRating: true,
-                                            itemCount: 5,
-                                            itemPadding:
-                                                EdgeInsetsDirectional.only(
-                                                    end: 1.0),
-                                            itemBuilder: (context, _) => Icon(
-                                              Icons.star,
-                                              color: defaultColor,
-                                              size: 10,
-                                            ),
-                                            onRatingUpdate: (rating) {
-                                              print(rating);
-                                            },
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(' 4 Star Ratings',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .copyWith(
-                                                      color: defaultColor))
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text('Rs. 750',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline2!
-                                                  .copyWith(fontSize: 31)),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsetsDirectional
-                                                .only(start: 25.0),
-                                            child: Text('/ per Portion',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1!),
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Text('Description',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline2),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare leo non mollis id cursus. Eu euismod faucibus in leo malesuada',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Row(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 45,
+                                    ),
+                                    Text('${item.title}',
+                                        maxLines: 1,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1!
+                                            .copyWith(fontSize: 22)),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('Number of Portions',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline2),
-                                        const SizedBox(
-                                          width: 30,
-                                        ),
-                                        Expanded(
-                                          child: Container(
-                                            width: double.infinity,
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Material(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    elevation: 10,
-                                                    child: defaultButton(
-                                                        function: () {
-                                                          cubit
-                                                              .changeNumberOfPortions(
-                                                                  '-');
-                                                        },
-                                                        text: '-',
-                                                        width: 20,
-                                                        radius: 20,
-                                                        height: 30),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Expanded(
-                                                  child: defaultButton(
-                                                      function: () {},
-                                                      text:
-                                                          '${cubit.numberOfPortions}',
-                                                      width: 20,
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                      fontColor: defaultColor,
-                                                      borderWidth: 1,
-                                                      radius: 20,
-                                                      height: 30),
-                                                ),
-                                                const SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Expanded(
-                                                  child: Material(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    elevation: 10,
-                                                    child: defaultButton(
-                                                        function: () {
-                                                          cubit
-                                                              .changeNumberOfPortions(
-                                                                  '+');
-                                                        },
-                                                        text: '+',
-                                                        radius: 20,
-                                                        width: 20,
-                                                        height: 30),
-                                                  ),
-                                                ),
-                                              ],
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            RatingBar.builder(
+                                              itemSize: 30,
+                                              initialRating: item.rate,
+                                              ignoreGestures: true,
+                                              minRating: 1,
+                                              direction: Axis.horizontal,
+                                              allowHalfRating: true,
+                                              itemCount: 5,
+                                              itemPadding:
+                                                  EdgeInsetsDirectional.only(
+                                                      end: 1.0),
+                                              itemBuilder: (context, _) => Icon(
+                                                Icons.star,
+                                                color: defaultColor,
+                                                size: 10,
+                                              ),
+                                              onRatingUpdate: (rating) {
+                                                print(rating);
+                                              },
                                             ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text('${item.rate} Ratings',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1!
+                                                    .copyWith(
+                                                        color: defaultColor))
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text('Rs. ${item.price}',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline2!
+                                                    .copyWith(fontSize: 31)),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .only(start: 25.0),
+                                              child: Text('/ per Portion',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1!),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Text('Description',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline2),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text('${item.description}',
+                                        maxLines: 3,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Number of Portions',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline2),
+                                          const SizedBox(
+                                            width: 30,
                                           ),
-                                        )
-                                      ]),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Expanded(
-                                      child: buildMoreItem(
-                                          context: context,
-                                          title: 'title',
-                                          cubit: cubit)),
-                                  SizedBox(
-                                    height: 50,
-                                  ),
-                                ],
+                                          Expanded(
+                                            child: Container(
+                                              width: double.infinity,
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Material(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      elevation: 10,
+                                                      child: defaultButton(
+                                                          function: () {
+                                                            cubit
+                                                                .changeNumberOfPortions(
+                                                                    '-');
+                                                          },
+                                                          text: '-',
+                                                          width: 20,
+                                                          radius: 20,
+                                                          height: 30),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Expanded(
+                                                    child: defaultButton(
+                                                        function: () {},
+                                                        text:
+                                                            '${cubit.numberOfPortions}',
+                                                        width: 20,
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        fontColor: defaultColor,
+                                                        borderWidth: 1,
+                                                        radius: 20,
+                                                        height: 30),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Expanded(
+                                                    child: Material(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      elevation: 10,
+                                                      child: defaultButton(
+                                                          function: () {
+                                                            cubit
+                                                                .changeNumberOfPortions(
+                                                                    '+');
+                                                          },
+                                                          text: '+',
+                                                          radius: 20,
+                                                          width: 20,
+                                                          height: 30),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ]),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    buildMoreItem(
+                                        context: context,
+                                        title: 'title',
+                                        cubit: cubit),
+                                    SizedBox(
+                                      height: 50,
+                                    ),
+                                  ],
+                                ),
                               ),
                             )),
                         Padding(
