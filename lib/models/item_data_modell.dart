@@ -5,7 +5,7 @@ class ItemModel {
   late String category;
   late String imagepath;
 
-  late var rate;
+  late String rate;
   late var price;
   late var discount;
 

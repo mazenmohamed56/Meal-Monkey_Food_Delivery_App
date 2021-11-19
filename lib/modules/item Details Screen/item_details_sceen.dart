@@ -16,7 +16,8 @@ class ItemDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return BlocProvider(
-      create: (context) => ItemDetailsScreenCubit()..setPrices(item.price),
+      create: (context) => ItemDetailsScreenCubit()
+        ..setPrices(item.discount != 0 ? item.discount : item.price),
       child: BlocConsumer<ItemDetailsScreenCubit, ItemDetailsScreenStates>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -109,7 +110,8 @@ class ItemDetailsScreen extends StatelessWidget {
                                           children: [
                                             RatingBar.builder(
                                               itemSize: 30,
-                                              initialRating: item.rate,
+                                              initialRating:
+                                                  double.parse(item.rate),
                                               ignoreGestures: true,
                                               minRating: 1,
                                               direction: Axis.horizontal,
@@ -142,11 +144,42 @@ class ItemDetailsScreen extends StatelessWidget {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text('Rs. ${item.price}',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline2!
-                                                    .copyWith(fontSize: 31)),
+                                            Row(
+                                              children: [
+                                                Text('Rs. ',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline2!
+                                                        .copyWith(
+                                                            fontSize: 31)),
+                                                if (item.discount != 0)
+                                                  Text('${item.discount} ',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline2!
+                                                          .copyWith(
+                                                              fontSize: 31)),
+                                                Text('${item.price}',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline2!
+                                                        .copyWith(
+                                                            fontSize:
+                                                                item.discount !=
+                                                                        0
+                                                                    ? 15
+                                                                    : 31,
+                                                            decoration: item
+                                                                        .discount !=
+                                                                    0
+                                                                ? TextDecoration
+                                                                    .lineThrough
+                                                                : TextDecoration
+                                                                    .none,
+                                                            decorationColor:
+                                                                defaultColor)),
+                                              ],
+                                            ),
                                             const SizedBox(
                                               height: 5,
                                             ),
