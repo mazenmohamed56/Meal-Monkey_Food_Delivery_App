@@ -102,56 +102,76 @@ class MenuDetails extends StatelessWidget {
                 width: double.infinity,
                 fit: BoxFit.fill),
             const SizedBox(height: 10),
-            Card(
-              margin: EdgeInsets.zero,
-              elevation: 20,
-              color: Colors.black.withOpacity(0.04),
-              child: Padding(
-                padding:
-                    const EdgeInsetsDirectional.only(start: 21, bottom: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${items[index].title}',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline2!
-                          .copyWith(color: Colors.white),
-                    ),
-                    const SizedBox(height: 5),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.solidStar,
-                          color: defaultColor,
-                          size: 14,
-                        ),
-                        const SizedBox(width: 5),
-                        Text('${items[index].rate}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText2!
-                                .copyWith(color: defaultColor)),
-                        const SizedBox(width: 5),
-                        Text('(rating)',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText2!
-                                .copyWith(color: Colors.white)),
-                        const SizedBox(width: 25),
-                        Text('${items[index].category}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText2!
-                                .copyWith(color: Colors.white)),
-                      ],
-                    )
-                  ],
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Card(
+                margin: EdgeInsets.zero,
+                elevation: 20,
+                color: Colors.black.withOpacity(0.04),
+                child: Padding(
+                  padding:
+                      const EdgeInsetsDirectional.only(start: 21, bottom: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${items[index].title}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline2!
+                            .copyWith(color: Colors.white),
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.solidStar,
+                            color: defaultColor,
+                            size: 14,
+                          ),
+                          const SizedBox(width: 5),
+                          Text('${items[index].rate}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(color: defaultColor)),
+                          const SizedBox(width: 5),
+                          Text('(rating)',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(color: Colors.white)),
+                          const SizedBox(width: 25),
+                          Text('${items[index].category}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(color: Colors.white)),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
+            if (items[index].discount != 0)
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  color: defaultColor,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 5.0,
+                  ),
+                  child: Text(
+                    'OFFER',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),

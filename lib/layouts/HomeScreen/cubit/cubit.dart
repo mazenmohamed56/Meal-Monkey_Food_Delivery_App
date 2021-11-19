@@ -151,11 +151,15 @@ class HomeCubit extends Cubit<HomeScreenStates> {
   List<ItemModel> dessert = [];
   List<ItemModel> berverages = [];
   List<ItemModel> promotions = [];
+  List<ItemModel> offers = [];
   void getItems() {
     emit(getItemsDataLoadingState());
     FirebaseFirestore.instance.collection('items').get().then((value) {
       value.docs.forEach((element) {
         items.add(ItemModel.fromJson(element.data()));
+        if (ItemModel.fromJson(element.data()).discount != 0) {
+          offers.add(ItemModel.fromJson(element.data()));
+        }
         if (ItemModel.fromJson(element.data()).category == 'food') {
           food.add(ItemModel.fromJson(element.data()));
         } else if (ItemModel.fromJson(element.data()).category == 'dessert') {
@@ -165,6 +169,7 @@ class HomeCubit extends Cubit<HomeScreenStates> {
         } else {
           promotions.add(ItemModel.fromJson(element.data()));
         }
+        print('{{{{{{{{{{${items.length}             }}}}}}}}}}}');
       });
       emit(getItemsDataSuccessState());
     }).catchError((error) {
