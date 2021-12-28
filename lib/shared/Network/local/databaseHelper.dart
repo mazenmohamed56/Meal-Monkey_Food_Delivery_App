@@ -47,7 +47,7 @@ class DatabaseHelper {
     });
   }
 
-  delteData({required int id}) async {
+  delteData({required String id}) async {
     final Database db = await createDatabase();
 
     db.rawUpdate('DELETE FROM $uid WHERE id = ?', [id]).then((value) {});

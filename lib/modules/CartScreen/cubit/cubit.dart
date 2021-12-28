@@ -74,7 +74,15 @@ class CartScreenCubit extends Cubit<CartScreenStates> {
     });
   }
 
-  delete() {
+  deletItem({required int index, required String id}) {
+    cart.removeAt(index);
+    cartItems.removeAt(index);
+    calculateTotalPrice();
+    emit(DeletItemSuccessState());
+    db.delteData(id: id);
+  }
+
+  checkOut() {
     db.delete();
     cart = [];
     cartItems = [];
