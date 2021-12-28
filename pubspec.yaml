@@ -30,21 +30,23 @@ dependencies:
   cupertino_icons: ^1.0.2
   font_awesome_flutter: ^9.1.0
   pinput: ^1.2.0
-  bloc: ^7.2.0
-  flutter_bloc: ^7.3.0
-  firebase_core: "^1.4.0"
-  firebase_auth: "^3.0.1"
-  cloud_firestore: "^2.4.0"
+  bloc: ^8.0.1
+  flutter_bloc: ^8.0.0
+  firebase_core: ^1.10.0
+  firebase_auth: ^3.2.0
+  cloud_firestore: ^3.1.0
   flutter_conditional_rendering: ^2.0.0
   shared_preferences: ^2.0.6
   carousel_slider: ^4.0.0 
   smooth_page_indicator: ^1.0.0+2
   
-  flutter_login_facebook: ^1.1.0
-  google_sign_in: ^5.1.0
-  image_picker: ^0.8.4+2
-  firebase_storage: ^10.0.1
+  flutter_login_facebook: ^1.2.0
+  google_sign_in: ^5.2.1
+  image_picker: ^0.8.4+4
+  firebase_storage: ^10.1.0
   flutter_rating_bar: ^4.0.0
+  fluttertoast: ^8.0.8
+  sqflite: ^2.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

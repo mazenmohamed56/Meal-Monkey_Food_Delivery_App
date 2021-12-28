@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 Widget defaultFormField({
   required TextEditingController controller,
@@ -137,3 +138,14 @@ Widget mySeparator() => Padding(
         color: Colors.grey[500],
       ),
     );
+void showToast({
+  required String msg,
+}) async =>
+    await Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.deepOrange,
+        fontSize: 16.0);
