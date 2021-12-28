@@ -15,6 +15,8 @@ import 'package:meal_monkey/modules/OffersScreen/offers_screen.dart';
 import 'package:meal_monkey/modules/ProfileScreen/profile_screen.dart';
 import 'package:meal_monkey/shared/Network/local/sharedPreferences.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:meal_monkey/shared/Network/local/databaseHelper.dart';
+import 'package:meal_monkey/shared/components/constants.dart';
 
 class HomeCubit extends Cubit<HomeScreenStates> {
   HomeCubit() : super(InitHomeState());
@@ -146,14 +148,13 @@ class HomeCubit extends Cubit<HomeScreenStates> {
     });
   }
 
-  List<ItemModel> items = [];
   List<ItemModel> food = [];
   List<ItemModel> dessert = [];
   List<ItemModel> berverages = [];
   List<ItemModel> promotions = [];
   List<ItemModel> offers = [];
   void getItems() {
-    emit(getItemsDataLoadingState());
+    emit(GetItemsDataLoadingState());
     FirebaseFirestore.instance.collection('items').get().then((value) {
       value.docs.forEach((element) {
         items.add(ItemModel.fromJson(element.data()));
@@ -169,12 +170,11 @@ class HomeCubit extends Cubit<HomeScreenStates> {
         } else {
           promotions.add(ItemModel.fromJson(element.data()));
         }
-        print('{{{{{{{{{{${items.length}             }}}}}}}}}}}');
       });
-      emit(getItemsDataSuccessState());
+      emit(GetItemsDataSuccessState());
     }).catchError((error) {
       print('{{{{$error}}}}}');
-      emit(getItemsDataErrorState());
+      emit(GetItemsDataErrorState());
     });
   }
 }

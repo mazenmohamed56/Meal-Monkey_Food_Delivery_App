@@ -26,11 +26,11 @@ class PickProfileImageSuccessState extends HomeScreenStates {}
 
 class PickProfileImageErrorState extends HomeScreenStates {}
 
-class getItemsDataLoadingState extends HomeScreenStates {}
+class GetItemsDataLoadingState extends HomeScreenStates {}
 
-class getItemsDataSuccessState extends HomeScreenStates {}
+class GetItemsDataSuccessState extends HomeScreenStates {}
 
-class getItemsDataErrorState extends HomeScreenStates {}
+class GetItemsDataErrorState extends HomeScreenStates {}
 
 class UpdateUserDataLoadingState extends HomeScreenStates {}
 

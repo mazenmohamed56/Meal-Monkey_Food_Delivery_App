@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meal_monkey/models/item_data_modell.dart';
+import 'package:meal_monkey/modules/CartScreen/cart_screen.dart';
 import 'package:meal_monkey/modules/item%20Details%20Screen/cubit/cubit.dart';
 import 'package:meal_monkey/modules/item%20Details%20Screen/cubit/states.dart';
 import 'package:meal_monkey/shared/components/components.dart';
@@ -146,7 +147,7 @@ class ItemDetailsScreen extends StatelessWidget {
                                           children: [
                                             Row(
                                               children: [
-                                                Text('Rs. ',
+                                                Text('\$ ',
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .headline2!
@@ -377,13 +378,19 @@ class ItemDetailsScreen extends StatelessWidget {
                       SizedBox(
                         height: 15,
                       ),
-                      Text('LKR ${cubit.totalPrice}',
+                      Text('\$ ${cubit.totalPrice}',
                           style: Theme.of(context).textTheme.headline1),
                       SizedBox(
                         height: 10,
                       ),
                       defaultButton(
-                          function: () {},
+                          function: () {
+                            cubit.addToCart(
+                                id: item.id,
+                                itemCount: cubit.numberOfPortions,
+                                totalPrice: cubit.totalPrice);
+                            showToast(msg: 'Added Successfully');
+                          },
                           isUpperCase: false,
                           prefix: FontAwesomeIcons.cartPlus,
                           text: 'Add to Cart',
@@ -407,13 +414,17 @@ class ItemDetailsScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50),
                 color: Color(0xFFFFFFFF),
               ),
-              child: Padding(
-                  padding: const EdgeInsets.only(left: 5.0),
-                  child: Icon(
-                    FontAwesomeIcons.shoppingCart,
-                    size: 25,
-                    color: defaultColor,
-                  )),
+              child: IconButton(
+                iconSize: 25,
+                icon: Icon(
+                  FontAwesomeIcons.shoppingCart,
+                  size: 25,
+                  color: defaultColor,
+                ),
+                onPressed: () {
+                  navigateTo(context, CartScreen());
+                },
+              ),
             ),
           ),
         ],
