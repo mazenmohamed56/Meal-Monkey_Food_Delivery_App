@@ -6,100 +6,92 @@ import 'package:meal_monkey/modules/CartScreen/cubit/states.dart';
 import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
+import 'check_out_dialog.dart';
+
 class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => CartScreenCubit()..getdata(),
-      child: BlocConsumer<CartScreenCubit, CartScreenStates>(
-          listener: (context, state) {},
-          builder: (BuildContext context, state) {
-            var cubit = CartScreenCubit.get(context);
-
-            return Scaffold(
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(70),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: AppBar(
-                    leading: Icon(FontAwesomeIcons.chevronLeft,
-                        size: 20, color: placeholder),
-                    automaticallyImplyLeading: false,
-                    elevation: 0,
-                    backgroundColor: Color(0xFFffffff),
-                    title: Text(
-                      'Cart',
-                      style: Theme.of(context).textTheme.headline3,
+    var cubit = CartScreenCubit.get(context);
+    cubit.getdata();
+    return BlocConsumer<CartScreenCubit, CartScreenStates>(
+        listener: (context, state) {},
+        builder: (BuildContext context, state) {
+          return Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(70),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: AppBar(
+                  leading: Icon(FontAwesomeIcons.chevronLeft,
+                      size: 20, color: placeholder),
+                  automaticallyImplyLeading: false,
+                  elevation: 0,
+                  backgroundColor: Color(0xFFffffff),
+                  title: Text(
+                    'Cart',
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ),
+              ),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Container(
+                height: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 25),
+                    Expanded(
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) =>
+                            buildCartItem(cubit, index, context),
+                        itemCount: cubit.cart.length,
+                        separatorBuilder: (BuildContext context, int index) =>
+                            SizedBox(
+                          height: 5,
+                        ),
+                      ),
                     ),
-                    actionsIconTheme: IconThemeData(color: primaryFontColor),
-                    actions: [
-                      Padding(
-                        padding: const EdgeInsetsDirectional.only(end: 20.0),
-                        child: Icon(
-                          FontAwesomeIcons.shoppingCart,
-                          size: 25,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              body: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                  height: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 25),
-                      Expanded(
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          physics: BouncingScrollPhysics(),
-                          itemBuilder: (BuildContext context, int index) =>
-                              buildCartItem(cubit, index, context),
-                          itemCount: cubit.cart.length,
-                          separatorBuilder: (BuildContext context, int index) =>
-                              SizedBox(
-                            height: 5,
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Total',
+                            style: Theme.of(context).textTheme.headline1,
                           ),
-                        ),
+                          Text('\$ ${cubit.cartTotalprice}',
+                              style: Theme.of(context).textTheme.headline1),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Total',
-                              style: Theme.of(context).textTheme.headline1,
-                            ),
-                            Text('\$ ${cubit.cartTotalprice}',
-                                style: Theme.of(context).textTheme.headline1),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      defaultButton(
-                        function: () {
-                          CartScreenCubit.get(context).checkOut();
-                        },
-                        text: 'Check Out',
-                        radius: 30,
-                        isUpperCase: false,
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    defaultButton(
+                      function: () {
+                        checkOutDialog(context);
+                      },
+                      text: 'Check Out',
+                      radius: 30,
+                      isUpperCase: false,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
                 ),
               ),
-            );
-          }),
-    );
+            ),
+          );
+        });
   }
 
   Widget buildCartItem(CartScreenCubit cubit, int index, BuildContext context) {

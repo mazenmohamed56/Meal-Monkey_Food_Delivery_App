@@ -1,29 +1,28 @@
+import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meal_monkey/modules/LoginScreen/cubit/cubit.dart';
-import 'package:meal_monkey/modules/SignUpScreen/cubit/cubit.dart';
-import 'package:meal_monkey/modules/item%20Details%20Screen/cubit/cubit.dart';
-import 'package:meal_monkey/modules/splashScreen/splash_screen.dart';
-import 'package:meal_monkey/shared/BlocObserver.dart';
-import 'package:meal_monkey/shared/Network/local/sharedPreferences.dart';
-import 'package:meal_monkey/shared/cubit/cubit.dart';
-import 'package:meal_monkey/shared/cubit/states.dart';
-import 'package:meal_monkey/shared/styles/colors.dart';
+
+import 'modules/CartScreen/cubit/cubit.dart';
+import 'modules/splashScreen/splash_screen.dart';
+import 'shared/BlocObserver.dart';
+import 'shared/Network/local/sharedPreferences.dart';
+import 'shared/cubit/cubit.dart';
+import 'shared/cubit/states.dart';
+import 'shared/styles/colors.dart';
 
 import 'layouts/HomeScreen/cubit/cubit.dart';
-import 'modules/CartScreen/cubit/cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   BlocOverrides.runZoned(
-    () {},
+    () {
+      runApp(MyApp());
+    },
     blocObserver: MyBlocObserver(),
   );
   await Firebase.initializeApp();
   await CacheHelper.init();
-
-  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -38,6 +37,9 @@ class MyApp extends StatelessWidget {
             create: (context) => HomeCubit()
               ..getUserData()
               ..getItems()),
+        BlocProvider(
+          create: (BuildContext context) => CartScreenCubit(),
+        )
       ],
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},

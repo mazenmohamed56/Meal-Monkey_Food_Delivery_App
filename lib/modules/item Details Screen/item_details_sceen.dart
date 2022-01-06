@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meal_monkey/models/item_data_modell.dart';
-import 'package:meal_monkey/modules/CartScreen/cart_screen.dart';
 import 'package:meal_monkey/modules/item%20Details%20Screen/cubit/cubit.dart';
 import 'package:meal_monkey/modules/item%20Details%20Screen/cubit/states.dart';
 import 'package:meal_monkey/shared/components/components.dart';
@@ -47,14 +46,7 @@ class ItemDetailsScreen extends StatelessWidget {
                           icon: Icon(FontAwesomeIcons.chevronLeft,
                               size: 20, color: Colors.white70),
                         ),
-                        IconButton(
-                            onPressed: () {},
-                            icon: Padding(
-                              padding:
-                                  const EdgeInsetsDirectional.only(end: 20.0),
-                              child: Icon(FontAwesomeIcons.shoppingCart,
-                                  size: 25, color: Colors.white70),
-                            ))
+                        cartIcon(context: context, color: Colors.white70),
                       ],
                     ),
                   ),
@@ -414,17 +406,7 @@ class ItemDetailsScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50),
                 color: Color(0xFFFFFFFF),
               ),
-              child: IconButton(
-                iconSize: 25,
-                icon: Icon(
-                  FontAwesomeIcons.shoppingCart,
-                  size: 25,
-                  color: defaultColor,
-                ),
-                onPressed: () {
-                  navigateTo(context, CartScreen());
-                },
-              ),
+              child: cartIcon(context: context, color: defaultColor),
             ),
           ),
         ],

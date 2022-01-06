@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:meal_monkey/modules/CartScreen/cart_screen.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -129,14 +130,24 @@ Widget defaultButton({
       ),
     );
 
-Widget mySeparator() => Padding(
-      padding:
-          const EdgeInsetsDirectional.only(top: 10.0, start: 20, bottom: 10),
-      child: Container(
-        width: double.infinity,
-        height: 1,
-        color: Colors.grey[500],
-      ),
+IconButton cartIcon(
+    {required BuildContext context, Color color = primaryFontColor}) {
+  return IconButton(
+    icon: Icon(
+      FontAwesomeIcons.shoppingCart,
+      color: color,
+      size: 25,
+    ),
+    onPressed: () {
+      navigateTo(context, CartScreen());
+    },
+  );
+}
+
+Widget mySeparator() => Container(
+      width: double.infinity,
+      height: 1,
+      color: Colors.grey[500],
     );
 void showToast({
   required String msg,
