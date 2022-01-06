@@ -11,7 +11,10 @@ class CartScreenCubit extends Cubit<CartScreenStates> {
   List<ItemModel> cartItems = [];
   DatabaseHelper db = DatabaseHelper();
   num cartTotalprice = 0;
+  int paymentMethodRadioSelectedValue = -1;
   getdata() async {
+    cart = [];
+    cartItems = [];
     emit(GetCartDataLoading());
     db.getdata().then((value) {
       value.forEach((e) {
@@ -36,7 +39,7 @@ class CartScreenCubit extends Cubit<CartScreenStates> {
   updateCartItem({
     required String typeOfChange,
     required int index,
-    required int pricePerPortion,
+    required num pricePerPortion,
   }) {
     int itemcount = cart[index]['itemCount'];
     if (typeOfChange == '-') {
@@ -82,11 +85,16 @@ class CartScreenCubit extends Cubit<CartScreenStates> {
     db.delteData(id: id);
   }
 
-  checkOut() {
+  sendOrder() {
     db.delete();
     cart = [];
     cartItems = [];
     cartTotalprice = 0;
     emit(GetCartDataLoading());
+  }
+
+  changeRadioValue(value) {
+    paymentMethodRadioSelectedValue = value;
+    emit(ChangeRadioValueState());
   }
 }

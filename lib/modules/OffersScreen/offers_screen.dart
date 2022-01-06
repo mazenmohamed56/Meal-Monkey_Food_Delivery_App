@@ -23,22 +23,12 @@ class OffersScreen extends StatelessWidget {
                 padding: const EdgeInsetsDirectional.only(start: 21, end: 120),
                 child: Container(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Find discounts Offers special meals',
-                          style: Theme.of(context).textTheme.bodyText1),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.only(end: 40.0),
-                        child: defaultButton(
-                            function: (e) {},
-                            text: 'Check Offers',
-                            radius: 30,
-                            height: 35,
-                            isUpperCase: false),
-                      ),
-                    ],
-                  ),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Find discounts Offers special meals',
+                            style: Theme.of(context).textTheme.bodyText1),
+                        const SizedBox(height: 30),
+                      ]),
                 ),
               ),
               const SizedBox(height: 20),

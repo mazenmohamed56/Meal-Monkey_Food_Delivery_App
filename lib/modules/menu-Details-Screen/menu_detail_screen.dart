@@ -34,15 +34,8 @@ class MenuDetails extends StatelessWidget {
                 appBarTitle,
                 style: Theme.of(context).textTheme.headline3,
               ),
-              actionsIconTheme: IconThemeData(color: primaryFontColor),
               actions: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(end: 20.0),
-                  child: Icon(
-                    FontAwesomeIcons.shoppingCart,
-                    size: 25,
-                  ),
-                )
+                cartIcon(context: context),
               ],
             ),
           ),

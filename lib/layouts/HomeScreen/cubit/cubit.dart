@@ -15,7 +15,6 @@ import 'package:meal_monkey/modules/OffersScreen/offers_screen.dart';
 import 'package:meal_monkey/modules/ProfileScreen/profile_screen.dart';
 import 'package:meal_monkey/shared/Network/local/sharedPreferences.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:meal_monkey/shared/Network/local/databaseHelper.dart';
 import 'package:meal_monkey/shared/components/constants.dart';
 
 class HomeCubit extends Cubit<HomeScreenStates> {

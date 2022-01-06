@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meal_monkey/layouts/HomeScreen/cubit/cubit.dart';
 import 'package:meal_monkey/layouts/HomeScreen/cubit/states.dart';
-import 'package:meal_monkey/modules/CartScreen/cart_screen.dart';
 import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
@@ -27,18 +26,7 @@ class HomeLayOut extends StatelessWidget {
                   cubit.titles[cubit.currentIndex],
                   style: Theme.of(context).textTheme.headline3,
                 ),
-                actionsIconTheme: IconThemeData(color: primaryFontColor),
-                actions: [
-                  IconButton(
-                    icon: Icon(
-                      FontAwesomeIcons.shoppingCart,
-                      size: 25,
-                    ),
-                    onPressed: () {
-                      navigateTo(context, CartScreen());
-                    },
-                  )
-                ],
+                actions: [cartIcon(context: context)],
               ),
             ),
           ),
