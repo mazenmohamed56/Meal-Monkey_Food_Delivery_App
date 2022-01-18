@@ -92,6 +92,7 @@ class HomeCubit extends Cubit<HomeScreenStates> {
     required String name,
     required String phone,
     required String address,
+    required GeoPoint geoAddress,
   }) {
     firebase_storage.FirebaseStorage.instance
         .ref()
@@ -101,7 +102,11 @@ class HomeCubit extends Cubit<HomeScreenStates> {
       value.ref.getDownloadURL().then((value) {
         profileImagePath = value;
         profileimage = null;
-        updataData(name: name, phone: phone, address: address);
+        updataData(
+            name: name,
+            phone: phone,
+            address: address,
+            geoAddress: GeoPoint(0, 0));
       }).catchError((error) {});
     }).catchError((error) {});
   }
@@ -110,19 +115,29 @@ class HomeCubit extends Cubit<HomeScreenStates> {
     required String name,
     required String phone,
     required String address,
+    required GeoPoint geoAddress,
   }) async {
     emit(UpdateUserDataLoadingState());
 
     if (profileimage != null)
-      uploadProfilePic(name: name, phone: phone, address: address);
+      uploadProfilePic(
+          name: name,
+          phone: phone,
+          address: address,
+          geoAddress: GeoPoint(0, 0));
     else
-      updataData(name: name, phone: phone, address: address);
+      updataData(
+          name: name,
+          phone: phone,
+          address: address,
+          geoAddress: GeoPoint(0, 0));
   }
 
   void updataData({
     required String name,
     required String phone,
     required String address,
+    required GeoPoint geoAddress,
   }) {
     emit(UpdateUserDataLoadingState());
     UserModel usermodel = UserModel(
@@ -130,6 +145,7 @@ class HomeCubit extends Cubit<HomeScreenStates> {
       email: model.email,
       phone: phone,
       uId: model.uId,
+      geoAddress: geoAddress,
       profileImagepath: profileImagePath,
       address: address,
     );

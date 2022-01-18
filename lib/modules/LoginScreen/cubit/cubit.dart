@@ -50,7 +50,7 @@ class LoginCubit extends Cubit<LoginScreenStates> {
         final FacebookAccessToken? accessToken = res.accessToken;
         final AuthCredential authCredential =
             FacebookAuthProvider.credential(accessToken!.token);
-         await FirebaseAuth.instance
+        await FirebaseAuth.instance
             .signInWithCredential(authCredential)
             .then((user) {
           //Create Doc to save user Data
@@ -120,7 +120,8 @@ class LoginCubit extends Cubit<LoginScreenStates> {
             email: user.user!.email.toString(),
             uId: user.user!.uid,
             profileImagepath: user.user!.photoURL.toString(),
-            address: 'Please add your address',
+            address: ('Please add your address'),
+            geoAddress: GeoPoint(0, 0),
             phone: 'Please add your phone number');
 
         FirebaseFirestore.instance

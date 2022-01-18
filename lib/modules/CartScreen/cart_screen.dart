@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meal_monkey/modules/CartScreen/cubit/cubit.dart';
 import 'package:meal_monkey/modules/CartScreen/cubit/states.dart';
@@ -43,15 +44,39 @@ class CartScreen extends StatelessWidget {
                   children: [
                     SizedBox(height: 25),
                     Expanded(
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) =>
-                            buildCartItem(cubit, index, context),
-                        itemCount: cubit.cart.length,
-                        separatorBuilder: (BuildContext context, int index) =>
-                            SizedBox(
-                          height: 5,
+                      child: Conditional.single(
+                        context: context,
+                        widgetBuilder: (context) => ListView.separated(
+                          shrinkWrap: true,
+                          physics: BouncingScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) =>
+                              buildCartItem(cubit, index, context),
+                          itemCount: cubit.cart.length,
+                          separatorBuilder: (BuildContext context, int index) =>
+                              SizedBox(
+                            height: 5,
+                          ),
+                        ),
+                        conditionBuilder: (BuildContext context) =>
+                            cubit.cart.length > 0,
+                        fallbackBuilder: (BuildContext context) => Center(
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.no_food_outlined,
+                                size: 50,
+                              ),
+                              Text(
+                                'No items in Cart',
+                                style: Theme.of(context).textTheme.headline3,
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                'Please add some items',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -77,7 +102,10 @@ class CartScreen extends StatelessWidget {
                     ),
                     defaultButton(
                       function: () {
-                        checkOutDialog(context);
+                        if (cubit.cart.length > 0)
+                          checkOutDialog(context);
+                        else
+                          showToast(msg: 'Please add some items');
                       },
                       text: 'Check Out',
                       radius: 30,

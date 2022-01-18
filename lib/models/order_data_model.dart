@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class OrderModel {
   late String orderId;
   late String userId;
   late String status;
   late String paymentMethod;
   late String address;
+  late GeoPoint geoAddress;
   late String note;
   late List<Item> data;
   late var totalPrice;
@@ -15,6 +18,7 @@ class OrderModel {
       required this.status,
       required this.paymentMethod,
       required this.address,
+      required this.geoAddress,
       required this.note,
       required this.data,
       required this.totalPrice,
@@ -26,6 +30,7 @@ class OrderModel {
     status = json['status'];
     paymentMethod = json['paymentMethod'];
     address = json['address'];
+    geoAddress = json['geoAddress'];
     note = json['note'];
     if (json['data'] != null) {
       json['data'].forEach((v) {

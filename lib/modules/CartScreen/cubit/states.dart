@@ -11,3 +11,5 @@ class UpdateCartSuccessState extends CartScreenStates {}
 class DeletItemSuccessState extends CartScreenStates {}
 
 class ChangeRadioValueState extends CartScreenStates {}
+
+class SetSelectedAddressSuccessState extends CartScreenStates {}

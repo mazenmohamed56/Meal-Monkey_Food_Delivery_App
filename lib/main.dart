@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'modules/CartScreen/cubit/cubit.dart';
+import 'modules/MapScreen/cubit/cubit.dart';
 import 'modules/splashScreen/splash_screen.dart';
 import 'shared/BlocObserver.dart';
 import 'shared/Network/local/sharedPreferences.dart';
@@ -39,7 +40,11 @@ class MyApp extends StatelessWidget {
               ..getItems()),
         BlocProvider(
           create: (BuildContext context) => CartScreenCubit(),
-        )
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              MapScreenCubit()..getUserAddressPosition(context),
+        ),
       ],
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},

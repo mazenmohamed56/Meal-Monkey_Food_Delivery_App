@@ -47,6 +47,9 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   fluttertoast: ^8.0.8
   sqflite: ^2.0.1
+  google_maps_flutter: ^2.1.1
+  geocoding: ^2.0.1
+  geolocator: ^8.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
