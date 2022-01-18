@@ -4,20 +4,21 @@ import 'package:meal_monkey/modules/CartScreen/cart_screen.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-Widget defaultFormField({
-  required TextEditingController controller,
-  required TextInputType type,
-  Function? onSubmit,
-  bool isPassword = false,
-  required String? Function(String? val)? validate,
-  double radius = 0.0,
-  required String label,
-  IconData? prefix,
-  IconData? suffix,
-  Function? suffixPressed,
-  bool isClickable = true,
-}) =>
+Widget defaultFormField(
+        {required TextEditingController controller,
+        required TextInputType type,
+        Function? onSubmit,
+        bool isPassword = false,
+        required String? Function(String? val)? validate,
+        double radius = 0.0,
+        required String label,
+        IconData? prefix,
+        IconData? suffix,
+        Function? suffixPressed,
+        bool isClickable = true,
+        double width = double.infinity}) =>
     Container(
+      width: width,
       height: 56,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       decoration: BoxDecoration(

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:meal_monkey/layouts/HomeScreen/cubit/cubit.dart';
 import 'package:meal_monkey/modules/CartScreen/cubit/cubit.dart';
 import 'package:meal_monkey/modules/CartScreen/cubit/states.dart';
 import 'package:meal_monkey/modules/MapScreen/cubit/cubit.dart';
-import 'package:meal_monkey/modules/MapScreen/map_screen.dart';
 import 'package:meal_monkey/shared/components/components.dart';
+import 'package:meal_monkey/shared/components/constants.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
 Future<dynamic> checkOutDialog(BuildContext context) {
@@ -21,7 +21,6 @@ class MydialogContent extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = CartScreenCubit.get(context);
-        var notesController;
 
         return Padding(
           padding: const EdgeInsets.all(20.0),
@@ -123,7 +122,7 @@ class MydialogContent extends StatelessWidget {
                                             ],
                                           ),
                                           TextFormField(
-                                            controller: notesController,
+                                            controller: cubit.notesController,
                                             minLines: 1,
                                             maxLines: 8,
                                             decoration: InputDecoration(
@@ -171,7 +170,7 @@ class MydialogContent extends StatelessWidget {
                   detailsRowWithTextButton(
                       context: context,
                       title:
-                          '${MapScreenCubit.get(context).selectedAddress['address'] == '' ? HomeCubit.get(context).model.address : MapScreenCubit.get(context).selectedAddress['address']}',
+                          '${MapScreenCubit.get(context).selectedAddress['address'] == '' ? userModel.address : MapScreenCubit.get(context).selectedAddress['address']}',
                       subTitle: 'Change',
                       fontSize: 15,
                       icon: Icons.change_circle,
@@ -179,17 +178,28 @@ class MydialogContent extends StatelessWidget {
                         cubit.changeAddress(context);
                       }),
                   Expanded(
-                      child: Container(
-                          child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: defaultButton(
-                                  radius: 30,
-                                  isUpperCase: false,
-                                  function: () {
-                                    cubit.sendOrder();
-                                    Navigator.pop(context);
-                                  },
-                                  text: "Send Order")))),
+                    child: Container(
+                      child: Conditional.single(
+                        context: context,
+                        conditionBuilder: (context) =>
+                            state is! SendOrderLoadingState,
+                        widgetBuilder: (BuildContext context) => Align(
+                          alignment: Alignment.bottomCenter,
+                          child: defaultButton(
+                              function: () {
+                                cubit
+                                    .sendOrder()
+                                    .then((value) => Navigator.pop(context));
+                              },
+                              text: 'Send Order',
+                              radius: 30,
+                              isUpperCase: false),
+                        ),
+                        fallbackBuilder: (contex) =>
+                            Center(child: CircularProgressIndicator()),
+                      ),
+                    ),
+                  ),
                   const SizedBox(
                     height: 20,
                   ),

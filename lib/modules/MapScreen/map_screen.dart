@@ -10,9 +10,10 @@ import 'package:meal_monkey/shared/styles/colors.dart';
 class MapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Completer<GoogleMapController> _controller = Completer();
-
     var cubit = MapScreenCubit.get(context);
+    cubit.clearAddressMarkerList();
+    cubit.getUserAddressPosition(context);
+    Completer<GoogleMapController> _controller = Completer();
     return WillPopScope(
       onWillPop: () async {
         Navigator.pop(context, MapScreenCubit.get(context).selectedAddress);

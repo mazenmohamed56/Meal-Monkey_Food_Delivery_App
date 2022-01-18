@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_monkey/models/item_data_modell.dart';
+import 'package:meal_monkey/models/order_data_model.dart';
 import 'package:meal_monkey/modules/CartScreen/cubit/states.dart';
 import 'package:meal_monkey/modules/MapScreen/map_screen.dart';
 import 'package:meal_monkey/shared/Network/local/databaseHelper.dart';
+import 'package:meal_monkey/shared/Network/remote/firebase_helper.dart';
 import 'package:meal_monkey/shared/components/constants.dart';
 
 class CartScreenCubit extends Cubit<CartScreenStates> {
@@ -15,6 +17,9 @@ class CartScreenCubit extends Cubit<CartScreenStates> {
   DatabaseHelper db = DatabaseHelper();
   num cartTotalprice = 0;
   int paymentMethodRadioSelectedValue = -1;
+  var notesController = TextEditingController();
+  FirebaseHelper firebaseHelper = FirebaseHelper();
+
   getdata() async {
     cart = [];
     cartItems = [];
@@ -88,12 +93,48 @@ class CartScreenCubit extends Cubit<CartScreenStates> {
     db.delteData(id: id);
   }
 
-  sendOrder() {
-    db.delete();
-    cart = [];
-    cartItems = [];
-    cartTotalprice = 0;
-    emit(GetCartDataLoading());
+  Future<void> sendOrder() async {
+    emit(SendOrderLoadingState());
+    await Future.delayed(Duration(seconds: 2));
+    var randomId = FirebaseFirestore.instance.collection('orders').doc().id;
+    List<Item> data = [];
+
+    for (int index = 0; index < cartItems.length; index++) {
+      Item e = new Item(
+          id: cartItems[index].id,
+          title: cartItems[index].title,
+          itemCount: cart[index]['itemCount'],
+          totalPrice: cart[index]['totalPrice']);
+      data.add(e);
+    }
+    OrderModel model = OrderModel(
+        orderId: randomId,
+        userId: userModel.uId,
+        status: 'Being processed',
+        paymentMethod: 'Cash on delivery',
+        address: selectedAddress['address'] == ''
+            ? userModel.address
+            : selectedAddress['address'],
+        geoAddress: selectedAddress['geoPoint'] != GeoPoint(0, 0)
+            ? selectedAddress['geoPoint']
+            : userModel.geoAddress,
+        note: notesController.text,
+        data: data,
+        delevryPrice: 2,
+        subPrice: cartTotalprice,
+        totalPrice: cartTotalprice + 2,
+        discount: 0,
+        dateTime: DateTime.now().toString());
+    firebaseHelper.postData('orders', randomId, model).then((value) {
+      db.delete();
+      cart = [];
+      cartItems = [];
+      cartTotalprice = 0;
+      notesController.text = '';
+      emit(SendOrderSuccessState());
+    }).catchError((error) {
+      emit(SendOrderErrorState());
+    });
   }
 
   changeRadioValue(value) {

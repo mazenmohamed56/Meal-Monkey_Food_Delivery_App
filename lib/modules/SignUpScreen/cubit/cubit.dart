@@ -5,10 +5,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_monkey/models/user_data_model.dart';
 import 'package:meal_monkey/modules/SignUpScreen/cubit/states.dart';
+import 'package:meal_monkey/shared/Network/remote/firebase_helper.dart';
 
 class RegisterCubit extends Cubit<RegisterScreenStates> {
   RegisterCubit() : super(InitRegisterState());
   static RegisterCubit get(context) => BlocProvider.of(context);
+  FirebaseHelper firebaseHelper = new FirebaseHelper();
+
   void postRegister({
     required String email,
     required String password,
@@ -53,11 +56,7 @@ class RegisterCubit extends Cubit<RegisterScreenStates> {
         profileImagepath:
             'https://icon-library.com/images/anonymous-person-icon/anonymous-person-icon-18.jpg');
 
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uId)
-        .set(model.toMap())
-        .then((value) {
+    firebaseHelper.postData('users', uId, model).then((value) {
       emit(CreateUserSuccessState());
     }).catchError((error) {
       print(error.toString());

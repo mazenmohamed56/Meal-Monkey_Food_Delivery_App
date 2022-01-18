@@ -9,19 +9,20 @@ import 'package:meal_monkey/layouts/HomeScreen/cubit/states.dart';
 import 'package:meal_monkey/models/item_data_modell.dart';
 import 'package:meal_monkey/models/user_data_model.dart';
 import 'package:meal_monkey/modules/HomeScreen/home_screen.dart';
+import 'package:meal_monkey/modules/MapScreen/map_screen.dart';
 import 'package:meal_monkey/modules/MenuScreen/menu_screen.dart';
 import 'package:meal_monkey/modules/MoreScreen/more_screen.dart';
 import 'package:meal_monkey/modules/OffersScreen/offers_screen.dart';
 import 'package:meal_monkey/modules/ProfileScreen/profile_screen.dart';
 import 'package:meal_monkey/shared/Network/local/sharedPreferences.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:meal_monkey/shared/Network/remote/firebase_helper.dart';
 import 'package:meal_monkey/shared/components/constants.dart';
 
 class HomeCubit extends Cubit<HomeScreenStates> {
   HomeCubit() : super(InitHomeState());
   static HomeCubit get(context) => BlocProvider.of(context);
-  late UserModel model;
   late String profileImagePath;
+  FirebaseHelper firebaseHelper = new FirebaseHelper();
 
   List<Widget> screens = [
     MenuScreen(),
@@ -47,11 +48,11 @@ class HomeCubit extends Cubit<HomeScreenStates> {
     var uid = CacheHelper.getData(key: 'uId');
     print(uid);
     emit(GetUserDataLoadingState());
-    FirebaseFirestore.instance.collection('users').doc(uid).get().then((value) {
+    firebaseHelper.getDocData('users', uid).then((value) {
       print(value.data());
-      model = UserModel.fromJson(value.data());
-      profileImagePath = model.profileImagepath;
-      print(model.email);
+      userModel = UserModel.fromJson(value.data());
+      profileImagePath = userModel.profileImagepath;
+      print(userModel.email);
       emit(GetUserDataSuccessState());
     }).catchError((error) {
       print(error.toString());
@@ -88,29 +89,6 @@ class HomeCubit extends Cubit<HomeScreenStates> {
     }
   }
 
-  void uploadProfilePic({
-    required String name,
-    required String phone,
-    required String address,
-    required GeoPoint geoAddress,
-  }) {
-    firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child('users/${Uri.file(profileimage!.path).pathSegments.last}')
-        .putFile(profileimage!)
-        .then((value) {
-      value.ref.getDownloadURL().then((value) {
-        profileImagePath = value;
-        profileimage = null;
-        updataData(
-            name: name,
-            phone: phone,
-            address: address,
-            geoAddress: GeoPoint(0, 0));
-      }).catchError((error) {});
-    }).catchError((error) {});
-  }
-
   Future<void> updateUserData({
     required String name,
     required String phone,
@@ -119,41 +97,35 @@ class HomeCubit extends Cubit<HomeScreenStates> {
   }) async {
     emit(UpdateUserDataLoadingState());
 
-    if (profileimage != null)
-      uploadProfilePic(
-          name: name,
-          phone: phone,
-          address: address,
-          geoAddress: GeoPoint(0, 0));
-    else
+    if (profileimage != null) {
+      profileImagePath = await firebaseHelper.uploadFile('users',
+          Uri.file(profileimage!.path).pathSegments.last, profileimage);
+      profileimage = null;
       updataData(
-          name: name,
-          phone: phone,
-          address: address,
-          geoAddress: GeoPoint(0, 0));
+          name: name, phone: phone, address: address, geoAddress: geoAddress);
+    } else
+      updataData(
+          name: name, phone: phone, address: address, geoAddress: geoAddress);
   }
 
-  void updataData({
+  Future<void> updataData({
     required String name,
     required String phone,
     required String address,
     required GeoPoint geoAddress,
-  }) {
+  }) async {
     emit(UpdateUserDataLoadingState());
     UserModel usermodel = UserModel(
       name: name,
-      email: model.email,
+      email: userModel.email,
       phone: phone,
-      uId: model.uId,
+      uId: userModel.uId,
       geoAddress: geoAddress,
       profileImagepath: profileImagePath,
       address: address,
     );
-
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(model.uId)
-        .update(usermodel.toMap())
+    await firebaseHelper
+        .updateDocData('users', userModel.uId, usermodel)
         .then((value) {
       getUserData();
       changeIsClickForm();
@@ -168,28 +140,44 @@ class HomeCubit extends Cubit<HomeScreenStates> {
   List<ItemModel> berverages = [];
   List<ItemModel> promotions = [];
   List<ItemModel> offers = [];
-  void getItems() {
+  Future<void> getItems() async {
     emit(GetItemsDataLoadingState());
-    FirebaseFirestore.instance.collection('items').get().then((value) {
-      value.docs.forEach((element) {
-        items.add(ItemModel.fromJson(element.data()));
-        if (ItemModel.fromJson(element.data()).discount != 0) {
-          offers.add(ItemModel.fromJson(element.data()));
-        }
-        if (ItemModel.fromJson(element.data()).category == 'food') {
-          food.add(ItemModel.fromJson(element.data()));
-        } else if (ItemModel.fromJson(element.data()).category == 'dessert') {
-          dessert.add(ItemModel.fromJson(element.data()));
-        } else if (ItemModel.fromJson(element.data()).category == 'beverages') {
-          berverages.add(ItemModel.fromJson(element.data()));
-        } else {
-          promotions.add(ItemModel.fromJson(element.data()));
-        }
-      });
-      emit(GetItemsDataSuccessState());
+    var value;
+    await firebaseHelper.getCollectionData('items').then((val) {
+      value = val;
     }).catchError((error) {
-      print('{{{{$error}}}}}');
       emit(GetItemsDataErrorState());
     });
+
+    value.docs.forEach((element) {
+      items.add(ItemModel.fromJson(element.data()));
+      if (ItemModel.fromJson(element.data()).discount != 0) {
+        offers.add(ItemModel.fromJson(element.data()));
+      }
+      switch (ItemModel.fromJson(element.data()).category) {
+        case 'food':
+          food.add(ItemModel.fromJson(element.data()));
+          break;
+        case 'dessert':
+          dessert.add(ItemModel.fromJson(element.data()));
+          break;
+        case 'beverages':
+          berverages.add(ItemModel.fromJson(element.data()));
+          break;
+
+        default:
+          promotions.add(ItemModel.fromJson(element.data()));
+      }
+    });
+    print(items.length);
+    emit(GetItemsDataSuccessState());
+  }
+
+  Map selectedAddress = {'address': '', 'geoPoint': GeoPoint(0, 0)};
+  changeAddress(context) async {
+    selectedAddress = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MapScreen()));
+    print('------------$selectedAddress');
+    emit(SetSelectedAddressSuccessState());
   }
 }
