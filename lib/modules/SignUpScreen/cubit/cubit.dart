@@ -15,6 +15,7 @@ class RegisterCubit extends Cubit<RegisterScreenStates> {
     required String name,
     required String phone,
     required String address,
+    required GeoPoint geoAddress,
   }) {
     emit(RegisterLoadingState());
     FirebaseAuth.instance
@@ -25,6 +26,7 @@ class RegisterCubit extends Cubit<RegisterScreenStates> {
           email: email,
           phone: phone,
           uId: value.user!.uid,
+          geoAddress: GeoPoint(0, 0),
           address: address);
       print(value.user!.email);
       emit(RegisterSuccessState(value.user!.uid));
@@ -39,6 +41,7 @@ class RegisterCubit extends Cubit<RegisterScreenStates> {
     required String phone,
     required String uId,
     required String address,
+    required GeoPoint geoAddress,
   }) {
     UserModel model = UserModel(
         name: name,
@@ -46,6 +49,7 @@ class RegisterCubit extends Cubit<RegisterScreenStates> {
         phone: phone,
         uId: uId,
         address: address,
+        geoAddress: geoAddress,
         profileImagepath:
             'https://icon-library.com/images/anonymous-person-icon/anonymous-person-icon-18.jpg');
 

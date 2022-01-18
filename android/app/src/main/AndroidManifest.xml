@@ -2,10 +2,13 @@
     package="com.example.meal_monkey">
     
   <uses-permission android:name="android.permission.INTERNET"/>
-
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
    <application
         android:label="meal_monkey"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyDj0XwJoh6NE8x4MSITAvK5xzg0ZV7ki_c"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -30,6 +33,7 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
+                
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_monkey/models/item_data_modell.dart';
 import 'package:meal_monkey/modules/CartScreen/cubit/states.dart';
+import 'package:meal_monkey/modules/MapScreen/map_screen.dart';
 import 'package:meal_monkey/shared/Network/local/databaseHelper.dart';
 import 'package:meal_monkey/shared/components/constants.dart';
 
@@ -96,5 +99,14 @@ class CartScreenCubit extends Cubit<CartScreenStates> {
   changeRadioValue(value) {
     paymentMethodRadioSelectedValue = value;
     emit(ChangeRadioValueState());
+  }
+
+  Map selectedAddress = {'address': '', 'geoPoint': GeoPoint(0, 0)};
+
+  changeAddress(context) async {
+    selectedAddress = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MapScreen()));
+    print('------------$selectedAddress');
+    emit(SetSelectedAddressSuccessState());
   }
 }

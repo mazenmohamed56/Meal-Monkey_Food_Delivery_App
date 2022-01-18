@@ -4,6 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meal_monkey/layouts/HomeScreen/cubit/cubit.dart';
 import 'package:meal_monkey/modules/CartScreen/cubit/cubit.dart';
 import 'package:meal_monkey/modules/CartScreen/cubit/states.dart';
+import 'package:meal_monkey/modules/MapScreen/cubit/cubit.dart';
+import 'package:meal_monkey/modules/MapScreen/map_screen.dart';
 import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
@@ -168,11 +170,14 @@ class MydialogContent extends StatelessWidget {
                           .copyWith(fontSize: 20)),
                   detailsRowWithTextButton(
                       context: context,
-                      title: '${HomeCubit.get(context).model.address}',
+                      title:
+                          '${MapScreenCubit.get(context).selectedAddress['address'] == '' ? HomeCubit.get(context).model.address : MapScreenCubit.get(context).selectedAddress['address']}',
                       subTitle: 'Change',
-                      fontSize: 18,
+                      fontSize: 15,
                       icon: Icons.change_circle,
-                      function: () {}),
+                      function: () {
+                        cubit.changeAddress(context);
+                      }),
                   Expanded(
                       child: Container(
                           child: Align(
@@ -209,9 +214,16 @@ Widget detailsRowWithTextButton(
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Text(
-        '$title',
-        style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 20),
+      Expanded(
+        child: Text(
+          '$title',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context)
+              .textTheme
+              .bodyText1!
+              .copyWith(fontSize: fontSize),
+        ),
       ),
       TextButton(
         onPressed: () {

@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meal_monkey/layouts/HomeScreen/cubit/cubit.dart';
 import 'package:meal_monkey/layouts/HomeScreen/cubit/states.dart';
 import 'package:meal_monkey/shared/components/components.dart';
@@ -20,7 +22,7 @@ class ProfileScreen extends StatelessWidget {
         var phoneController = TextEditingController();
         phoneController.text = cubit.model.phone;
         var addressController = TextEditingController();
-        addressController.text = cubit.model.address;
+        addressController.text = cubit.model.address.toString();
         var formKey = GlobalKey<FormState>();
         var profileimage = cubit.profileimage;
 
@@ -39,7 +41,7 @@ class ProfileScreen extends StatelessWidget {
                   if (state is UpdateUserDataLoadingState)
                     LinearProgressIndicator(),
                   const SizedBox(
-                    height: 25,
+                    height: 15,
                   ),
                   Container(
                     clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -132,7 +134,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 25,
+                    height: 15,
                   ),
                   defaultFormField(
                       isClickable: cubit.isClickable,
@@ -185,7 +187,8 @@ class ProfileScreen extends StatelessWidget {
                             cubit.updateUserData(
                                 name: nameController.text,
                                 phone: phoneController.text,
-                                address: addressController.text);
+                                address: addressController.text,
+                                geoAddress: GeoPoint(0, 0));
                           }
                         },
                         text: 'Save',

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
@@ -166,7 +167,8 @@ class SignUpScreen extends StatelessWidget {
                                           password: passwordController.text,
                                           name: nameController.text,
                                           phone: phoneController.text,
-                                          address: addressController.text);
+                                          address: addressController.text,
+                                          geoAddress: GeoPoint(0, 0));
                                     }
                                   },
                                   text: 'Sign Up',
