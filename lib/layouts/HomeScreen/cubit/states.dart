@@ -37,3 +37,7 @@ class UpdateUserDataLoadingState extends HomeScreenStates {}
 class UpdateUserDataSuccessState extends HomeScreenStates {}
 
 class UpdateUserDataErrorState extends HomeScreenStates {}
+
+class UploadProfilePic extends HomeScreenStates {}
+
+class SetSelectedAddressSuccessState extends HomeScreenStates {}

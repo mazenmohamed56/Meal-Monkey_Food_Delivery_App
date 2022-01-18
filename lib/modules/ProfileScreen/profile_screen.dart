@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meal_monkey/layouts/HomeScreen/cubit/cubit.dart';
 import 'package:meal_monkey/layouts/HomeScreen/cubit/states.dart';
 import 'package:meal_monkey/shared/components/components.dart';
@@ -18,11 +17,13 @@ class ProfileScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = HomeCubit.get(context);
         var nameController = TextEditingController();
-        nameController.text = cubit.model.name;
+        nameController.text = userModel.name;
         var phoneController = TextEditingController();
-        phoneController.text = cubit.model.phone;
+        phoneController.text = userModel.phone;
         var addressController = TextEditingController();
-        addressController.text = cubit.model.address.toString();
+        addressController.text = cubit.selectedAddress['address'] == ''
+            ? userModel.address
+            : cubit.selectedAddress['address'];
         var formKey = GlobalKey<FormState>();
         var profileimage = cubit.profileimage;
 
@@ -55,7 +56,7 @@ class ProfileScreen extends StatelessWidget {
                           backgroundImage: profileimage != null
                               ? FileImage(profileimage)
                               : NetworkImage(
-                                  '${cubit.model.profileImagepath}',
+                                  '${userModel.profileImagepath}',
                                 ) as ImageProvider,
                         ),
                         Container(
@@ -110,7 +111,7 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text('Hi there ${cubit.model.name} !',
+                  Text('Hi there ${userModel.name} !',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.headline2),
@@ -164,23 +165,44 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(
                     height: 17,
                   ),
-                  defaultFormField(
-                      isClickable: cubit.isClickable,
-                      controller: addressController,
-                      type: TextInputType.streetAddress,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return '         Address must not be empty';
-                        }
-                      },
-                      label: 'Address',
-                      radius: 30),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: defaultFormField(
+                            isClickable: false,
+                            controller: addressController,
+                            type: TextInputType.streetAddress,
+                            validate: (value) {
+                              if (value!.isEmpty) {
+                                return '         Address must not be empty';
+                              }
+                            },
+                            label: 'Address',
+                            radius: 30),
+                      ),
+                      IconButton(
+                          color:
+                              cubit.isClickable ? defaultColor : Colors.black,
+                          highlightColor:
+                              cubit.isClickable ? Colors.green : null,
+                          splashRadius: 20,
+                          iconSize: 24,
+                          padding: EdgeInsets.zero,
+                          onPressed: () {
+                            if (cubit.isClickable) cubit.changeAddress(context);
+                          },
+                          icon: Icon(
+                            Icons.location_on_rounded,
+                          )),
+                    ],
+                  ),
                   const SizedBox(
                     height: 25,
                   ),
                   Conditional.single(
                     context: context,
-                    conditionBuilder: (context) => true,
+                    conditionBuilder: (context) =>
+                        state is! UpdateUserDataLoadingState,
                     widgetBuilder: (BuildContext context) => defaultButton(
                         function: () {
                           if (formKey.currentState!.validate()) {
@@ -188,7 +210,10 @@ class ProfileScreen extends StatelessWidget {
                                 name: nameController.text,
                                 phone: phoneController.text,
                                 address: addressController.text,
-                                geoAddress: GeoPoint(0, 0));
+                                geoAddress: cubit.selectedAddress['geoPoint'] !=
+                                        GeoPoint(0, 0)
+                                    ? cubit.selectedAddress['geoPoint']
+                                    : userModel.geoAddress);
                           }
                         },
                         text: 'Save',

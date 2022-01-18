@@ -6,9 +6,12 @@ class OrderModel {
   late String status;
   late String paymentMethod;
   late String address;
+  late String dateTime;
   late GeoPoint geoAddress;
   late String note;
   late List<Item> data;
+  late var delevryPrice;
+  late var subPrice;
   late var totalPrice;
   late var discount;
 
@@ -21,6 +24,9 @@ class OrderModel {
       required this.geoAddress,
       required this.note,
       required this.data,
+      required this.dateTime,
+      required this.delevryPrice,
+      required this.subPrice,
       required this.totalPrice,
       required this.discount});
 
@@ -30,6 +36,7 @@ class OrderModel {
     status = json['status'];
     paymentMethod = json['paymentMethod'];
     address = json['address'];
+    dateTime = json['dateTime'];
     geoAddress = json['geoAddress'];
     note = json['note'];
     if (json['data'] != null) {
@@ -38,11 +45,18 @@ class OrderModel {
       });
     }
 
+    delevryPrice = json['delevryPrice'];
+    subPrice = json['subPrice'];
     totalPrice = json['totalPrice'];
     discount = json['discount'];
   }
 
   Map<String, dynamic> toMap() {
+    final List<Map<String, dynamic>> data2 = [];
+    data.forEach((element) {
+      data2.add(element.toMap());
+    });
+
     return {
       'orderId': orderId,
       'userId': userId,
@@ -50,7 +64,10 @@ class OrderModel {
       'paymentMethod': paymentMethod,
       'address': address,
       'note': note,
-      'data': data,
+      'dateTime': dateTime,
+      'data': data2,
+      'delevryPrice': delevryPrice,
+      'subPrice': subPrice,
       'totalPrice': totalPrice,
       'discount': discount,
     };

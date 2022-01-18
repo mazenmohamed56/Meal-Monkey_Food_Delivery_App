@@ -42,8 +42,9 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) => CartScreenCubit(),
         ),
         BlocProvider(
-          create: (BuildContext context) =>
-              MapScreenCubit()..getUserAddressPosition(context),
+          create: (BuildContext context) => MapScreenCubit()
+            ..clearAddressMarkerList()
+            ..getUserAddressPosition(context),
         ),
       ],
       child: BlocConsumer<AppCubit, AppStates>(
