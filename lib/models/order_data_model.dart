@@ -77,8 +77,8 @@ class OrderModel {
 class Item {
   late String id;
   late String title;
-  late var totalPrice;
   late var itemCount;
+  late var totalPrice;
 
   Item(
       {required this.id,
@@ -98,7 +98,7 @@ class Item {
       'id': id,
       'title': title,
       'itemCount': itemCount,
-      'totalPrice': itemCount
+      'totalPrice': totalPrice
     };
   }
 }
