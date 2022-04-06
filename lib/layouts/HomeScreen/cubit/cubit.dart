@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meal_monkey/layouts/HomeScreen/cubit/states.dart';
 import 'package:meal_monkey/models/item_data_modell.dart';
+import 'package:meal_monkey/models/order_data_model.dart';
 import 'package:meal_monkey/models/user_data_model.dart';
 import 'package:meal_monkey/modules/HomeScreen/home_screen.dart';
 import 'package:meal_monkey/modules/MapScreen/map_screen.dart';
@@ -16,11 +17,16 @@ import 'package:meal_monkey/shared/Network/local/sharedPreferences.dart';
 import 'package:meal_monkey/shared/Network/remote/firebase_helper.dart';
 import 'package:meal_monkey/shared/components/constants.dart';
 
+import '../../../shared/Network/local/databaseHelper.dart';
+
 class HomeCubit extends Cubit<HomeScreenStates> {
   HomeCubit() : super(InitHomeState());
   static HomeCubit get(context) => BlocProvider.of(context);
   late String profileImagePath;
   FirebaseHelper firebaseHelper = new FirebaseHelper();
+  List<ItemModel> recentItems = [];
+
+  DatabaseHelper db = DatabaseHelper();
 
   List<Widget> screens = [
     MenuScreen(),
@@ -134,6 +140,7 @@ class HomeCubit extends Cubit<HomeScreenStates> {
   }
 
   List<ItemModel> food = [];
+  List<ItemModel> fav = [];
   List<ItemModel> dessert = [];
   List<ItemModel> berverages = [];
   List<ItemModel> promotions = [];
@@ -152,6 +159,9 @@ class HomeCubit extends Cubit<HomeScreenStates> {
       if (ItemModel.fromJson(element.data()).discount != 0) {
         offers.add(ItemModel.fromJson(element.data()));
       }
+      if (double.parse(ItemModel.fromJson(element.data()).rate) >= 4.5) {
+        fav.add(ItemModel.fromJson(element.data()));
+      }
       switch (ItemModel.fromJson(element.data()).category) {
         case 'food':
           food.add(ItemModel.fromJson(element.data()));
@@ -167,8 +177,26 @@ class HomeCubit extends Cubit<HomeScreenStates> {
           promotions.add(ItemModel.fromJson(element.data()));
       }
     });
+    await getMyOrders();
     print(items.length);
     emit(GetItemsDataSuccessState());
+  }
+
+  Future<void> getMyOrders() async {
+    emit(GetOrdersDataLoadingState());
+    await firebaseHelper.getCollectionData('orders').then((value) {
+      value.docs.forEach((element) {
+        myOrders.add(OrderModel.fromJson(element.data()));
+      });
+    }).catchError((error) {
+      emit(GetItemsDataErrorState());
+    });
+    myOrders.forEach((element) {
+      element.data.forEach((element) {
+        recentItems.add(
+            items.firstWhere((itemElement) => itemElement.id == element.id));
+      });
+    });
   }
 
   Map selectedAddress = {'address': '', 'geoPoint': GeoPoint(0, 0)};
