@@ -32,6 +32,12 @@ class GetItemsDataSuccessState extends HomeScreenStates {}
 
 class GetItemsDataErrorState extends HomeScreenStates {}
 
+class GetOrdersDataLoadingState extends HomeScreenStates {}
+
+class GetOrdersDataSuccessState extends HomeScreenStates {}
+
+class GetOrdersDataErrorState extends HomeScreenStates {}
+
 class UpdateUserDataLoadingState extends HomeScreenStates {}
 
 class UpdateUserDataSuccessState extends HomeScreenStates {}

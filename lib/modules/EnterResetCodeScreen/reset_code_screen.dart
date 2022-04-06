@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_monkey/modules/NewPasswordScreen/new_password_screen.dart';
 import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
-import 'package:pinput/pin_put/pin_put.dart';
+import 'package:pinput/pinput.dart';
 
 class ResetCodeScreen extends StatelessWidget {
   @override
@@ -44,7 +44,7 @@ class ResetCodeScreen extends StatelessWidget {
               const SizedBox(
                 height: 35,
               ),
-              PinPut(
+              Pinput(
                 preFilledWidget: Text(
                   '*',
                   style: Theme.of(context)
@@ -52,24 +52,20 @@ class ResetCodeScreen extends StatelessWidget {
                       .headline1!
                       .copyWith(fontSize: 40),
                 ),
-                withCursor: false,
-                fieldsCount: 4,
-                eachFieldHeight: 70,
-                eachFieldWidth: 70,
-                textStyle: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(fontSize: 25),
-                submittedFieldDecoration: BoxDecoration(
-                    color: Color(0xFFF2F2F2),
-                    borderRadius: BorderRadius.circular(20)),
-                selectedFieldDecoration: BoxDecoration(
-                    color: Color(0xFFF2F2F2),
-                    borderRadius: BorderRadius.circular(20)),
-                followingFieldDecoration: BoxDecoration(
-                    color: Color(0xFFF2F2F2),
-                    borderRadius: BorderRadius.circular(20)),
-                disabledDecoration: BoxDecoration(color: Colors.black),
+                showCursor: false,
+                length: 4,
+                submittedPinTheme: PinTheme(
+                  decoration: BoxDecoration(
+                      color: Color(0xFFF2F2F2),
+                      borderRadius: BorderRadius.circular(20)),
+                ),
+                followingPinTheme: PinTheme(
+                  decoration: BoxDecoration(
+                      color: Color(0xFFF2F2F2),
+                      borderRadius: BorderRadius.circular(20)),
+                ),
+                disabledPinTheme:
+                    PinTheme(decoration: BoxDecoration(color: Colors.black)),
                 separator: SizedBox(
                   width: 20,
                 ),

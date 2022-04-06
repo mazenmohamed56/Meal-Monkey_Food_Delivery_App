@@ -43,7 +43,7 @@ class HomeLayOut extends StatelessWidget {
                 color: cubit.currentIndex == 4 ? defaultColor : placeholder,
               ),
               child: Icon(
-                FontAwesomeIcons.home,
+                FontAwesomeIcons.house,
                 size: 40,
                 color: Colors.white,
               ),
@@ -66,9 +66,9 @@ class HomeLayOut extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      btmbatItem(
-                          cubit, context, FontAwesomeIcons.thLarge, 'Menu', 0),
-                      btmbatItem(cubit, context, FontAwesomeIcons.shoppingBag,
+                      btmbatItem(cubit, context,
+                          FontAwesomeIcons.tableCellsLarge, 'Menu', 0),
+                      btmbatItem(cubit, context, FontAwesomeIcons.bagShopping,
                           'Offerss', 1),
                     ],
                   ),

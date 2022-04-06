@@ -11,6 +11,7 @@
                android:value="AIzaSyDj0XwJoh6NE8x4MSITAvK5xzg0ZV7ki_c"/>
         <activity
             android:name=".MainActivity"
+            android:exported="true">
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -43,6 +44,7 @@
         android:value="@string/facebook_app_id"/>
     
     <activity android:name="com.facebook.FacebookActivity"
+
         android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
         android:label="@string/app_name" />
