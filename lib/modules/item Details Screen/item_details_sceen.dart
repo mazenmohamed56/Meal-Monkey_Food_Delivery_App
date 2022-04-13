@@ -17,7 +17,8 @@ class ItemDetailsScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return BlocProvider(
       create: (context) => ItemDetailsScreenCubit()
-        ..setPrices(item.discount != 0 ? item.discount : item.price),
+        ..setPrices(item.discount != 0 ? item.discount : item.price)
+        ..setFav(item.id),
       child: BlocConsumer<ItemDetailsScreenCubit, ItemDetailsScreenStates>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -44,9 +45,12 @@ class ItemDetailsScreen extends StatelessWidget {
                             Navigator.pop(context);
                           },
                           icon: Icon(FontAwesomeIcons.chevronLeft,
-                              size: 20, color: Colors.white70),
+                              size: 20,
+                              color: Theme.of(context).scaffoldBackgroundColor),
                         ),
-                        cartIcon(context: context, color: Colors.white70),
+                        cartIcon(
+                            context: context,
+                            color: Theme.of(context).scaffoldBackgroundColor),
                       ],
                     ),
                   ),
@@ -67,7 +71,7 @@ class ItemDetailsScreen extends StatelessWidget {
                         Container(
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Theme.of(context).scaffoldBackgroundColor,
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(35),
                                   topRight: Radius.circular(35)),
@@ -139,7 +143,7 @@ class ItemDetailsScreen extends StatelessWidget {
                                           children: [
                                             Row(
                                               children: [
-                                                Text('\$ ',
+                                                Text('L.E ',
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .headline2!
@@ -250,8 +254,9 @@ class ItemDetailsScreen extends StatelessWidget {
                                                         text:
                                                             '${cubit.numberOfPortions}',
                                                         width: 20,
-                                                        backgroundColor:
-                                                            Colors.white,
+                                                        backgroundColor: Theme
+                                                                .of(context)
+                                                            .scaffoldBackgroundColor,
                                                         fontColor: defaultColor,
                                                         borderWidth: 1,
                                                         radius: 20,
@@ -309,15 +314,20 @@ class ItemDetailsScreen extends StatelessWidget {
                                   topEnd: Radius.circular(100),
                                   bottomEnd: Radius.circular(20)),
                               elevation: 20,
-                              child: Container(
-                                width: 70,
-                                height: 70,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                ),
-                                child: Icon(
-                                  FontAwesomeIcons.solidHeart,
-                                  color: Colors.redAccent,
+                              child: InkWell(
+                                onTap: () => cubit.changeFavoriteColor(item.id),
+                                child: Container(
+                                  width: 70,
+                                  height: 70,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                  ),
+                                  child: Icon(
+                                    FontAwesomeIcons.solidHeart,
+                                    color:
+                                        cubit.fav ? defaultColor : Colors.grey,
+                                  ),
                                 ),
                               ),
                             ),
@@ -353,7 +363,7 @@ class ItemDetailsScreen extends StatelessWidget {
                   bottomStart: Radius.circular(30),
                   topEnd: Radius.circular(15),
                   bottomEnd: Radius.circular(15)),
-              color: Color(0xFFFFFFFF),
+              color: Theme.of(context).scaffoldBackgroundColor,
               child: Container(
                 width: double.infinity,
                 child: Padding(
@@ -370,24 +380,27 @@ class ItemDetailsScreen extends StatelessWidget {
                       SizedBox(
                         height: 15,
                       ),
-                      Text('\$ ${cubit.totalPrice}',
+                      Text('L.E ${cubit.totalPrice}',
                           style: Theme.of(context).textTheme.headline1),
                       SizedBox(
                         height: 10,
                       ),
-                      defaultButton(
-                          function: () {
-                            cubit.addToCart(
-                                id: item.id,
-                                itemCount: cubit.numberOfPortions,
-                                totalPrice: cubit.totalPrice);
-                            showToast(msg: 'Added Successfully');
-                          },
-                          isUpperCase: false,
-                          prefix: FontAwesomeIcons.cartPlus,
-                          text: 'Add to Cart',
-                          height: 40,
-                          radius: 30)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: defaultButton(
+                            function: () {
+                              cubit.addToCart(
+                                  id: item.id,
+                                  itemCount: cubit.numberOfPortions,
+                                  totalPrice: cubit.totalPrice);
+                              showToast(msg: 'Added Successfully');
+                            },
+                            isUpperCase: false,
+                            prefix: FontAwesomeIcons.cartPlus,
+                            text: 'Add to Cart',
+                            height: 40,
+                            radius: 30),
+                      )
                     ],
                   ),
                 ),
@@ -396,7 +409,7 @@ class ItemDetailsScreen extends StatelessWidget {
           ),
           Material(
             borderRadius: BorderRadius.circular(50),
-            color: Color(0xFFFFFFFF),
+            color: Theme.of(context).scaffoldBackgroundColor,
             elevation: 10,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             child: Container(
@@ -404,7 +417,7 @@ class ItemDetailsScreen extends StatelessWidget {
               height: 53,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-                color: Color(0xFFFFFFFF),
+                color: Theme.of(context).scaffoldBackgroundColor,
               ),
               child: cartIcon(context: context, color: defaultColor),
             ),

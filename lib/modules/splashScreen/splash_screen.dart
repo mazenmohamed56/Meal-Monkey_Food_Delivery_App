@@ -33,6 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
         alignment: Alignment.center,
         children: [
           Image(
+            fit: BoxFit.fill,
             width: double.infinity,
             image: AssetImage('assets/images/SplashBackGround.jpeg'),
           ),

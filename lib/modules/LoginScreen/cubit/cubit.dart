@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -59,20 +58,7 @@ class LoginCubit extends Cubit<LoginScreenStates> {
         });
 
         // Get profile data
-        final profile = await fb.getUserProfile();
 
-        print('Hello, ${profile!.name}! You ID: ${profile.userId}');
-
-        // Get user profile image url
-        final imageUrl = await fb.getProfileImageUrl(width: 100);
-        print('Your profile image: $imageUrl');
-
-        // Get email (since we request email permission)
-        final email = await fb.getUserEmail();
-        // But user can decline permission
-        if (email != null) print('And your email is $email');
-
-        emit(LoginSuccessState(profile.userId));
         break;
       case FacebookLoginStatus.cancel:
         // User cancel log in
@@ -97,10 +83,6 @@ class LoginCubit extends Cubit<LoginScreenStates> {
       await FirebaseAuth.instance.signInWithCredential(credential).then((user) {
         //Create Doc to save user Data
         createDoc(user);
-
-        emit(LoginSuccessState(
-          user.user!.uid,
-        ));
       });
     } catch (e) {
       print(e);
@@ -113,7 +95,9 @@ class LoginCubit extends Cubit<LoginScreenStates> {
         .collection('users')
         .doc(user.user!.uid)
         .get()
-        .then((value) {
+        .then((value) async {
+      print(';;;;;;  ${value.exists}');
+      print(';;;;;;  ${user.user!.uid}');
       if (value.exists == false) {
         UserModel model = UserModel(
             name: user.user!.displayName.toString(),
@@ -124,7 +108,7 @@ class LoginCubit extends Cubit<LoginScreenStates> {
             geoAddress: GeoPoint(0, 0),
             phone: 'Please add your phone number');
 
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection('users')
             .doc(user.user!.uid)
             .set(model.toMap())
@@ -132,10 +116,10 @@ class LoginCubit extends Cubit<LoginScreenStates> {
             .catchError((error) {
           print(error.toString());
         });
-        emit(LoginSuccessState(
-          user.user!.uid,
-        ));
       }
+      emit(LoginSuccessState(
+        user.user!.uid,
+      ));
     });
   }
 }

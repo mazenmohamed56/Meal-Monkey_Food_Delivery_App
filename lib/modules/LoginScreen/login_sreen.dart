@@ -23,9 +23,10 @@ class LoginScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginScreenStates>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is LoginSuccessState) {
-            CacheHelper.putData(key: 'uId', value: state.uId);
+            await CacheHelper.putData(key: 'uId', value: state.uId);
+            print('>>>>>>>>  ${state.uId}');
             late Widget widget;
             if (CacheHelper.getData(key: 'isOnBoarding') == null) {
               widget = BoardingScreen();

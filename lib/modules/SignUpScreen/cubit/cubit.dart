@@ -56,7 +56,7 @@ class RegisterCubit extends Cubit<RegisterScreenStates> {
         profileImagepath:
             'https://icon-library.com/images/anonymous-person-icon/anonymous-person-icon-18.jpg');
 
-    firebaseHelper.postData('users', uId, model).then((value) {
+    firebaseHelper.postData(col: 'users', doc: uId, model: model).then((value) {
       emit(CreateUserSuccessState());
     }).catchError((error) {
       print(error.toString());

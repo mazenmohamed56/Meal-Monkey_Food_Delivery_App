@@ -7,16 +7,18 @@ import 'package:meal_monkey/modules/CartScreen/cubit/states.dart';
 import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
+import '../../shared/cubit/cubit.dart';
 import 'check_out_dialog.dart';
 
 class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var cubit = CartScreenCubit.get(context);
-    cubit.getdata();
+    CartScreenCubit.get(context).getdata();
     return BlocConsumer<CartScreenCubit, CartScreenStates>(
         listener: (context, state) {},
         builder: (BuildContext context, state) {
+          var cubit = CartScreenCubit.get(context);
+
           return Scaffold(
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(70),
@@ -27,7 +29,9 @@ class CartScreen extends StatelessWidget {
                       size: 20, color: placeholder),
                   automaticallyImplyLeading: false,
                   elevation: 0,
-                  backgroundColor: Color(0xFFffffff),
+                  backgroundColor: AppCubit.get(context).isDark
+                      ? Color(0xFF2B2D42)
+                      : Color(0xFFffffff),
                   title: Text(
                     'Cart',
                     style: Theme.of(context).textTheme.headline3,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meal_monkey/modules/CartScreen/cart_screen.dart';
+import 'package:meal_monkey/shared/cubit/cubit.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -8,6 +9,7 @@ Widget defaultFormField(
         {required TextEditingController controller,
         required TextInputType type,
         Function? onSubmit,
+        Function? onChange,
         bool isPassword = false,
         required String? Function(String? val)? validate,
         double radius = 0.0,
@@ -34,6 +36,9 @@ Widget defaultFormField(
         enabled: isClickable,
         onFieldSubmitted: (e) {
           if (onSubmit != null) onSubmit(e);
+        },
+        onChanged: (s) {
+          if (onChange != null) onChange(s);
         },
         validator: validate,
         textAlignVertical: TextAlignVertical.center,
@@ -135,12 +140,26 @@ IconButton cartIcon(
     {required BuildContext context, Color color = primaryFontColor}) {
   return IconButton(
     icon: Icon(
-      FontAwesomeIcons.shoppingCart,
+      FontAwesomeIcons.cartShopping,
       color: color,
       size: 25,
     ),
     onPressed: () {
       navigateTo(context, CartScreen());
+    },
+  );
+}
+
+IconButton themIcon(
+    {required BuildContext context, Color color = primaryFontColor}) {
+  return IconButton(
+    icon: Icon(
+      AppCubit.get(context).isDark ? Icons.sunny : FontAwesomeIcons.moon,
+      color: color,
+      size: 25,
+    ),
+    onPressed: () {
+      AppCubit.get(context).changeThemeMode();
     },
   );
 }
@@ -156,8 +175,8 @@ void showToast({
     await Fluttertoast.showToast(
         msg: msg,
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.grey,
+        backgroundColor: Color.fromARGB(170, 195, 188, 188),
         textColor: Colors.deepOrange,
         fontSize: 16.0);
