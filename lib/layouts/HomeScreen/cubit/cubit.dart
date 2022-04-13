@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meal_monkey/layouts/HomeScreen/cubit/states.dart';
+import 'package:meal_monkey/models/favorite_model.dart';
 import 'package:meal_monkey/models/item_data_modell.dart';
 import 'package:meal_monkey/models/order_data_model.dart';
 import 'package:meal_monkey/models/user_data_model.dart';
@@ -24,7 +25,6 @@ class HomeCubit extends Cubit<HomeScreenStates> {
   static HomeCubit get(context) => BlocProvider.of(context);
   late String profileImagePath;
   FirebaseHelper firebaseHelper = new FirebaseHelper();
-  List<ItemModel> recentItems = [];
 
   DatabaseHelper db = DatabaseHelper();
 
@@ -48,15 +48,17 @@ class HomeCubit extends Cubit<HomeScreenStates> {
     emit(ChangeeNavBottomBarState());
   }
 
-  void getUserData() {
+  Future<void> getUserData() async {
     var uid = CacheHelper.getData(key: 'uId');
-    print(uid);
+    print('<<<<<<<<<<<<  $uid');
     emit(GetUserDataLoadingState());
-    firebaseHelper.getDocData('users', uid).then((value) {
+    await firebaseHelper.getDocData('users', uid).then((value) async {
       print(value.data());
       userModel = UserModel.fromJson(value.data());
       profileImagePath = userModel.profileImagepath;
       print(userModel.email);
+      await getMyOrders();
+      await getFavorites();
       emit(GetUserDataSuccessState());
     }).catchError((error) {
       print(error.toString());
@@ -146,9 +148,16 @@ class HomeCubit extends Cubit<HomeScreenStates> {
   List<ItemModel> promotions = [];
   List<ItemModel> offers = [];
   Future<void> getItems() async {
+    items = [];
+    food = [];
+    fav = [];
+    dessert = [];
+    berverages = [];
+    promotions = [];
+    offers = [];
     emit(GetItemsDataLoadingState());
     var value;
-    await firebaseHelper.getCollectionData('items').then((val) {
+    await firebaseHelper.getCollectionData(coll: 'items').then((val) {
       value = val;
     }).catchError((error) {
       emit(GetItemsDataErrorState());
@@ -177,24 +186,37 @@ class HomeCubit extends Cubit<HomeScreenStates> {
           promotions.add(ItemModel.fromJson(element.data()));
       }
     });
-    await getMyOrders();
+
     print(items.length);
     emit(GetItemsDataSuccessState());
   }
 
   Future<void> getMyOrders() async {
+    myOrders = [];
+    recentItems = [];
     emit(GetOrdersDataLoadingState());
-    await firebaseHelper.getCollectionData('orders').then((value) {
+    await firebaseHelper
+        .getCollectionData(
+            coll: 'users',
+            doc: userModel.uId,
+            secCol: 'Orders',
+            orderdby: 'dateTime')
+        .then((value) {
       value.docs.forEach((element) {
         myOrders.add(OrderModel.fromJson(element.data()));
       });
+      emit(GetOrdersDataSuccessState());
     }).catchError((error) {
-      emit(GetItemsDataErrorState());
+      print(error.toString());
+      emit(GetOrdersDataErrorState());
     });
     myOrders.forEach((element) {
       element.data.forEach((element) {
-        recentItems.add(
-            items.firstWhere((itemElement) => itemElement.id == element.id));
+        if (recentItems.contains(items.firstWhere(
+                (itemElement) => itemElement.id == element['id'])) ==
+            false)
+          recentItems.add(items
+              .firstWhere((itemElement) => itemElement.id == element['id']));
       });
     });
   }
@@ -205,5 +227,17 @@ class HomeCubit extends Cubit<HomeScreenStates> {
         context, MaterialPageRoute(builder: (context) => MapScreen()));
     print('------------$selectedAddress');
     emit(SetSelectedAddressSuccessState());
+  }
+
+  Future<void> getFavorites() async {
+    favorites = [];
+    await firebaseHelper
+        .getCollectionData(
+            coll: 'users', doc: userModel.uId, secCol: 'favorites')
+        .then((value) {
+      value.docs.forEach((element) {
+        favorites.add(FavoriteModel.fromJson(element.data()));
+      });
+    }).catchError((error) {});
   }
 }

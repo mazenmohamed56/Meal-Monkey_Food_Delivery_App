@@ -7,10 +7,11 @@ import 'package:meal_monkey/modules/menu-Details-Screen/menu_detail_screen.dart'
 import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
+import '../SearchSCreen/widget/searche_field.dart';
+
 class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var searchController = TextEditingController();
     return BlocConsumer<HomeCubit, HomeScreenStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -22,13 +23,7 @@ class MenuScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: defaultFormField(
-                    radius: 50,
-                    prefix: FontAwesomeIcons.search,
-                    controller: searchController,
-                    type: TextInputType.text,
-                    validate: (value) {},
-                    label: 'Search Food'),
+                child: SearchField(),
               ),
               SizedBox(
                 height: 10,
@@ -164,7 +159,7 @@ class MenuScreen extends StatelessWidget {
                     bottomStart: Radius.circular(30),
                     topEnd: Radius.circular(15),
                     bottomEnd: Radius.circular(15)),
-                color: Color(0xFFFFFFFF),
+                color: Theme.of(context).scaffoldBackgroundColor,
                 child: Container(
                   height: 87,
                   width: double.infinity,
@@ -224,7 +219,7 @@ class MenuScreen extends StatelessWidget {
             ),
             Material(
               borderRadius: BorderRadius.circular(50),
-              color: Color(0xFFFFFFFF),
+              color: Theme.of(context).scaffoldBackgroundColor,
               elevation: 10,
               clipBehavior: Clip.antiAliasWithSaveLayer,
               child: Container(
@@ -232,7 +227,7 @@ class MenuScreen extends StatelessWidget {
                 height: 33,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  color: Color(0xFFFFFFFF),
+                  color: Theme.of(context).scaffoldBackgroundColor,
                 ),
                 child: Padding(
                     padding: const EdgeInsets.only(left: 5.0),

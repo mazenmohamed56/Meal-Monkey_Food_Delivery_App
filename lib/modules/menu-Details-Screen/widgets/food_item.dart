@@ -42,11 +42,17 @@ class FoodItem extends StatelessWidget {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Image(
-                image: NetworkImage('${item.imagepath}'),
+            Image.network(item.imagepath,
+                loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
                 height: 200,
                 width: width ?? double.infinity,
-                fit: BoxFit.fill),
+              );
+            }, height: 200, width: width ?? double.infinity, fit: BoxFit.fill),
             const SizedBox(height: 10),
             Align(
               alignment: Alignment.bottomCenter,

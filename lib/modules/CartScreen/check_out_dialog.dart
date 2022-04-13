@@ -9,6 +9,8 @@ import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/components/constants.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
 
+import '../../shared/cubit/cubit.dart';
+
 Future<dynamic> checkOutDialog(BuildContext context) {
   return showDialog(
       context: context, builder: (context) => new MydialogContent());
@@ -26,14 +28,19 @@ class MydialogContent extends StatelessWidget {
           padding: const EdgeInsets.all(20.0),
           child: Container(
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                color: AppCubit.get(context).isDark
+                    ? Color.fromARGB(255, 25, 27, 40)
+                    : Colors.white,
+                borderRadius: BorderRadius.circular(20)),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Material(
-                    color: Colors.white,
+                    color: AppCubit.get(context).isDark
+                        ? Color.fromARGB(255, 25, 27, 40)
+                        : Colors.white,
                     child: Row(
                       children: [
                         IconButton(
@@ -54,7 +61,9 @@ class MydialogContent extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    color: Colors.grey[200],
+                    color: AppCubit.get(context).isDark
+                        ? Color.fromARGB(255, 55, 47, 47)
+                        : Colors.grey[200],
                     child: ListView.separated(
                         shrinkWrap: true,
                         itemBuilder: (context, index) => Padding(
@@ -70,7 +79,7 @@ class MydialogContent extends StatelessWidget {
                                           Theme.of(context).textTheme.bodyText1,
                                     ),
                                     Text(
-                                      '\$ ${cubit.cart[index]['totalPrice']}',
+                                      'L.E ${cubit.cart[index]['totalPrice']}',
                                       style:
                                           Theme.of(context).textTheme.bodyText1,
                                     )
@@ -144,6 +153,9 @@ class MydialogContent extends StatelessWidget {
                       icon: Icons.add,
                       function: () {}),
                   Material(
+                    color: AppCubit.get(context).isDark
+                        ? Color.fromARGB(255, 39, 42, 60)
+                        : Color.fromARGB(255, 242, 243, 247),
                     child: ListView(
                       shrinkWrap: true,
                       children: [
@@ -216,7 +228,8 @@ class MydialogContent extends StatelessWidget {
 Widget detailsRowWithTextButton(
     {required BuildContext context,
     required String title,
-    required String subTitle,
+    String? subTitle,
+    Color? color,
     TextEditingController? notesController,
     double fontSize = 20,
     IconData? icon,
@@ -232,7 +245,7 @@ Widget detailsRowWithTextButton(
           style: Theme.of(context)
               .textTheme
               .bodyText1!
-              .copyWith(fontSize: fontSize),
+              .copyWith(fontSize: fontSize, color: color ?? secondaryFontColor),
         ),
       ),
       TextButton(
@@ -248,7 +261,7 @@ Widget detailsRowWithTextButton(
             const SizedBox(
               width: 10,
             ),
-            Text('$subTitle',
+            Text('${subTitle ?? ''}',
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1!
@@ -271,7 +284,7 @@ Widget detailsRow(
             Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: fontSize),
       ),
       Text(
-        '\$ $data',
+        'L.E $data',
         style: Theme.of(context)
             .textTheme
             .bodyText1!

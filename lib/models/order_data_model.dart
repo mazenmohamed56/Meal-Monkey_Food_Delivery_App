@@ -4,12 +4,13 @@ class OrderModel {
   late String orderId;
   late String userId;
   late String status;
+  late String userPhoneNumber;
   late String paymentMethod;
   late String address;
-  late String dateTime;
+  late Timestamp dateTime;
   late GeoPoint geoAddress;
   late String note;
-  late List<Item> data;
+  late List<dynamic> data;
   late var delevryPrice;
   late var subPrice;
   late var totalPrice;
@@ -20,6 +21,7 @@ class OrderModel {
       required this.userId,
       required this.status,
       required this.paymentMethod,
+      required this.userPhoneNumber,
       required this.address,
       required this.geoAddress,
       required this.note,
@@ -34,15 +36,14 @@ class OrderModel {
     orderId = json!['orderId'];
     userId = json['userId'];
     status = json['status'];
+    userPhoneNumber = json['userPhoneNumber'];
     paymentMethod = json['paymentMethod'];
     address = json['address'];
     dateTime = json['dateTime'];
     geoAddress = json['geoAddress'];
     note = json['note'];
     if (json['data'] != null) {
-      json['data'].forEach((v) {
-        data.add(new Item.fromJson(v));
-      });
+      data = json['data'].toList();
     }
 
     delevryPrice = json['delevryPrice'];
@@ -61,6 +62,8 @@ class OrderModel {
       'orderId': orderId,
       'userId': userId,
       'status': status,
+      'geoAddress': geoAddress,
+      'userPhoneNumber': userPhoneNumber,
       'paymentMethod': paymentMethod,
       'address': address,
       'note': note,

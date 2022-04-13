@@ -9,6 +9,8 @@ import 'package:meal_monkey/shared/Network/local/databaseHelper.dart';
 import 'package:meal_monkey/shared/Network/remote/firebase_helper.dart';
 import 'package:meal_monkey/shared/components/constants.dart';
 
+import '../../../shared/Network/local/sharedPreferences.dart';
+
 class CartScreenCubit extends Cubit<CartScreenStates> {
   CartScreenCubit() : super(InitCartState());
   static CartScreenCubit get(context) => BlocProvider.of(context);
@@ -23,8 +25,11 @@ class CartScreenCubit extends Cubit<CartScreenStates> {
   getdata() async {
     cart = [];
     cartItems = [];
+
+    var uid = await CacheHelper.getData(key: 'uId');
+
     emit(GetCartDataLoading());
-    db.getdata().then((value) {
+    db.getdata(uid: uid).then((value) {
       value.forEach((e) {
         cart.add(Map<String, dynamic>.from(e));
       });
@@ -48,7 +53,7 @@ class CartScreenCubit extends Cubit<CartScreenStates> {
     required String typeOfChange,
     required int index,
     required num pricePerPortion,
-  }) {
+  }) async {
     int itemcount = cart[index]['itemCount'];
     if (typeOfChange == '-') {
       if (cart[index]['itemCount'] > 1) {
@@ -57,8 +62,10 @@ class CartScreenCubit extends Cubit<CartScreenStates> {
         cart[index]['totalPrice'] = pricePerPortion * cart[index]['itemCount'];
         calculateTotalPrice();
         emit(UpdateCartSuccessState());
+        var uid = await CacheHelper.getData(key: 'uId');
 
         db.updateDate(
+            uid: uid,
             itemCount: cart[index]['itemCount'],
             id: cart[index]['id'],
             totalPrice: cart[index]['totalPrice']);
@@ -70,8 +77,10 @@ class CartScreenCubit extends Cubit<CartScreenStates> {
       calculateTotalPrice();
       print(cartTotalprice);
       emit(UpdateCartSuccessState());
+      var uid = await CacheHelper.getData(key: 'uId');
 
       db.updateDate(
+          uid: uid,
           itemCount: cart[index]['itemCount'],
           id: cart[index]['id'],
           totalPrice: cart[index]['totalPrice']);
@@ -85,12 +94,14 @@ class CartScreenCubit extends Cubit<CartScreenStates> {
     });
   }
 
-  deletItem({required int index, required String id}) {
+  deletItem({required int index, required String id}) async {
     cart.removeAt(index);
     cartItems.removeAt(index);
     calculateTotalPrice();
     emit(DeletItemSuccessState());
-    db.delteData(id: id);
+    var uid = await CacheHelper.getData(key: 'uId');
+
+    db.delteData(id: id, uid: uid);
   }
 
   Future<void> sendOrder() async {
@@ -110,6 +121,7 @@ class CartScreenCubit extends Cubit<CartScreenStates> {
     OrderModel model = OrderModel(
         orderId: randomId,
         userId: userModel.uId,
+        userPhoneNumber: userModel.phone,
         status: 'Being processed',
         paymentMethod: 'Cash on delivery',
         address: selectedAddress['address'] == ''
@@ -124,9 +136,18 @@ class CartScreenCubit extends Cubit<CartScreenStates> {
         subPrice: cartTotalprice,
         totalPrice: cartTotalprice + 2,
         discount: 0,
-        dateTime: DateTime.now().toString());
-    firebaseHelper.postData('orders', randomId, model).then((value) {
-      db.delete();
+        dateTime: Timestamp.fromDate(DateTime.now()));
+    firebaseHelper
+        .postData(
+            col: 'users',
+            doc: userModel.uId,
+            secCol: 'Orders',
+            secdoc: randomId,
+            model: model)
+        .then((value) async {
+      var uid = await CacheHelper.getData(key: 'uId');
+
+      db.delete(uid: uid);
       cart = [];
       cartItems = [];
       cartTotalprice = 0;

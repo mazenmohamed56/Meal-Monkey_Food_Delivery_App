@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:meal_monkey/layouts/HomeScreen/cubit/cubit.dart';
-import 'package:meal_monkey/layouts/HomeScreen/cubit/states.dart';
 import 'package:meal_monkey/models/item_data_modell.dart';
 import 'package:meal_monkey/modules/menu-Details-Screen/widgets/food_item.dart';
 import 'package:meal_monkey/shared/components/components.dart';
 import 'package:meal_monkey/shared/styles/colors.dart';
+
+import '../SearchSCreen/widget/searche_field.dart';
 
 // ignore: must_be_immutable
 class MenuDetails extends StatelessWidget {
@@ -15,21 +14,22 @@ class MenuDetails extends StatelessWidget {
   MenuDetails(this.appBarTitle, this.items);
   @override
   Widget build(BuildContext context) {
-    var searchController = TextEditingController();
-
-    return BlocListener<HomeCubit, HomeScreenStates>(
-      listener: (context, state) {},
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(70),
           child: Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: AppBar(
-              leading: Icon(FontAwesomeIcons.chevronLeft,
-                  size: 20, color: placeholder),
+              leading: InkWell(
+                onTap: () => Navigator.pop(context),
+                child: Icon(FontAwesomeIcons.chevronLeft,
+                    size: 20, color: placeholder),
+              ),
               automaticallyImplyLeading: false,
               elevation: 0,
-              backgroundColor: Color(0xFFffffff),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               title: Text(
                 appBarTitle,
                 style: Theme.of(context).textTheme.headline3,
@@ -50,13 +50,7 @@ class MenuDetails extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: defaultFormField(
-                    radius: 50,
-                    prefix: FontAwesomeIcons.search,
-                    controller: searchController,
-                    type: TextInputType.text,
-                    validate: (value) {},
-                    label: 'Search Food'),
+                child: SearchField(),
               ),
               SizedBox(
                 height: 10,
